@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding:utf8 -*-
+
 #根据数据生成路径 eth -> A ; A - > btc ; btc -> B ; B-> etc
 #例子:
 #        卖           买           卖         买
@@ -16,7 +19,6 @@
 #函数根据传入的值进行生成路径
 #输入格式
 def gen_path_info(source_data):
-
     return
 
 

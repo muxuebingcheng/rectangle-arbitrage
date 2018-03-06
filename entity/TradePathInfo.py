@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding:utf8 -*-
+
 class XInitNumInfo:
     x_init=0
     def __init__(self,digiccy_a,digiccy_b,price_info_1,price_info_2,price_info_3,price_info_4):

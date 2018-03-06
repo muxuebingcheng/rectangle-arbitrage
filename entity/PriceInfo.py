@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding:utf8 -*-
+
 class PriceInfo():
     def __init__(self,price_pair_list):
         self.price1=price_pair_list[0][0];

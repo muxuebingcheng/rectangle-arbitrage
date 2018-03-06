@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding:utf8 -*-
+
 from tools import data_process
 from tools import generate_path_info
 from calc import calc_core
@@ -9,11 +12,11 @@ source_str="""{"code":"200","msg":"ok","data":[{"symbol":"hsr-eth","bids":[[0.01
 def main():
     print (source_str)
     #格式化源数据
-    data= data_process.format_data(source_str)
+    data= data_process.format_receive_data(source_str)
     #生成路径基础信息
-    path_info = generate_path_info(data)
+    path_info = generate_path_info.gen_path_info(data)
     #根据路径基础信息计算x起 a数量 和 四角套利公式
-
+    return
     #记录符合要求x and a
     x_and_a_list=list()
     #预计会用多线程改造 或多个程序平并行跑 每个程序跑几个货币对
