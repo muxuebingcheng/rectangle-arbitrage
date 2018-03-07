@@ -26,8 +26,6 @@ def main():
     print (source_str)
     #格式化源数据
     data= data_process.format_receive_data(source_str)
-    print type(data)
-    print len(data)
     #生成路径基础信息
     path_info = generate_path_info.gen_path_info(data)
     #根据路径基础信息计算x起 a数量 和 四角套利公式
