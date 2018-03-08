@@ -18,7 +18,36 @@
 
 #函数根据传入的值进行生成路径
 #输入格式
+def get_all_subsets(number):
+    index = range(number)
+    result = []
+    for i in range(2**number):
+	item = []
+	for j in range(number):
+	    if(i>>j)%2==1:
+		item.append(index[j])
+	if len(item)==0:
+	    continue
+	result.append(item)
+    return result
+
 def gen_path_info(source_data):
+    if len(source_data)==0:
+	return
+    #choose all two currencies from the source_data
+    all_index = range(len(source_data))
+    all_pairs = []
+    for item in itertools.permutations(all_index,2):
+	all_pairs.append(item)
+    path = []
+    for pair in all_pairs:
+	a_info = source_data[pair[0]]
+	b_info = source_data[pair[1]]
+	path_eth_a = []
+	path_a_btc = []
+	path_btc_b = []
+	path_b_eth = []
+	#TODO
     return
 
 
