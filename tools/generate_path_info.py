@@ -39,15 +39,68 @@ def gen_path_info(source_data):
     all_pairs = []
     for item in itertools.permutations(all_index,2):
 	all_pairs.append(item)
-    path = []
+    path_data = []
     for pair in all_pairs:
 	a_info = source_data[pair[0]]
 	b_info = source_data[pair[1]]
-	path_eth_a = []
-	path_a_btc = []
-	path_btc_b = []
-	path_b_eth = []
-	#TODO
-    return
-
-
+	###########produce four module exchange infos############
+	#module1:etc->a
+	#module2:a->btc
+	#module3:btc->b
+	#module4:b->eth
+	#a_info data structure
+	#a_info.eth_bids:[[ratio,count],[],[],[],[]]#the length of this data is no more than 5
+	#a_info.eth_asks:[[ratio,count],[],[],[],[]]#the length of this data is no more than 5
+	#a_info.btc_bids:[[ratio,count],[],[],[],[]]#the length of this data is no more than 5
+	#a_info.btc_asks:[[ratio,count],[],[],[],[]]#the length of this data is no more than 5
+	exchange_module1 = a_info.eth_bids#use a.eth_bids
+	exchange_module2 = a_info.btc_asks#use a.btc_asks
+	exchange_module3 = b_info.btc_bids#use b.btc_bids
+	exchange_module4 = b_info.eth_asks#use b.eth_asks
+	###################################################################
+	
+	###########produce module path using cartesian product##########
+	path_module1_index = get_all_subsets(len(exchange_module1))#this part can be optimized, because the data is ordered, and now the result omit the order
+	path_module2_index = get_all_subsets(len(exchange_module2))
+	path_module3_index = get_all_subsets(len(exchange_module3))
+	path_module4_index = get_all_subsets(len(exchange_module4))
+	
+	#step1:produce path from module1 to module2
+	path_step1 = []
+	for path1 in path_module1_index:
+		for path2 in path_module2_index:
+			path_step1.append([path1,path2])
+	#step2:produce path from step1(module1->module2) to module3
+	path_step2 = []
+	for path1 in path_step1:
+		for path3 in path_module3_index:
+			path_step2.append(path1.append(path3))
+	#step3:produce path from step2(module1->module2->module3) to module4
+	path_step3 = []
+	for path2 in path_step2:
+		for path4 in path_module4_index:
+			path_step3.append(path2.append(path4))
+	#the final path 
+	paths = path_step3
+	#note:paths is a list, each element is an inner list which has four items. The four item covers four module paths
+	#example:[path1,path2,path3,path4],path1=[0,1],path2=[1,2],path3=[1,3],path4=[1,2,3]
+	#produce the final data
+	for path in paths:
+		path_module1 = path[0]
+		path_module2 = path[1]
+		path_module3 = path[2]
+		path_module4 = path[3]
+		path1_data = []
+		path2_data = []
+		path3_data = []
+		path4_data = []
+		for index in path_module1:
+			path1_data.append(exchange_module1[index])
+		for index in path_module2:
+			path2_data.append(exchange_module2[index])
+		for index in path_module3:
+			path3_data.append(exchange_module3[index])
+		for index in path_module4:
+			path4_data.append(exchange_module4[index])
+		path_data.append([path1_data,path2_data,path3_data,path4_data])
+    return path_data
