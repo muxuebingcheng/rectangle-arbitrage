@@ -1,2 +1,2 @@
 # rectangle-arbitrage
-# Design a btc exchange algorithm platform.
+# design a btc exchange algorithm platform
