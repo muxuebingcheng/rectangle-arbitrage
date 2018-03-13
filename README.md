@@ -1,5 +1,7 @@
-# rectangle-arbitrage project aims at designing a btc exchange algorithm platform
-# 1.目录说明
+# rectangle-arbitrage 
+# 1.程序目标
+This project aims at designing a btc exchange algorithm platform
+# 2.目录说明
 1. cacl---提供格式化数据模块代码
 2. data---提供中间数据存储路径
 3. entity---具体的一些数据结构
