@@ -16,6 +16,33 @@
 # gnt ->etc
 # 降序 [[0.009411, 42.479], [0.00943, 25.8621], [0.009463, 74], [0.009464, 74], [0.00948, 148]]
 
+def get_paths_from_local_data():
+    data = open("paths_filtered.dat")
+    paths = []
+    for line in data.readlines():
+	data = line.strip().split(",")
+	path1 = []
+	path2 = []
+	path3 = []
+	path4 = []
+	for item in data:
+	    if int(item)<20:#group1
+		path1.append(int(item)%10)
+	    elif int(item)>=20 and int(item)<30:#group2
+		path2.append(int(item)%20)
+	    elif int(item)>=30 and int(item)<40:#group3
+		path3.append(int(item)%30)
+	    else:
+		path4.append(int(item)%40)
+	path = []
+	path.append(path1)
+	path.append(path2)
+	path.append(path3)
+	path.append(path4)
+	paths.append(path)
+    return paths
+
+
 #函数根据传入的值进行生成路径
 #输入格式
 def get_all_subsets(number):
