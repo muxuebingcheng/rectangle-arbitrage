@@ -16,8 +16,8 @@
 # gnt ->etc
 # 降序 [[0.009411, 42.479], [0.00943, 25.8621], [0.009463, 74], [0.009464, 74], [0.00948, 148]]
 
-def get_paths_from_local_data():
-    data = open("paths_filtered.dat")
+def get_paths_from_local_data(myfile):
+    data = open(myfile)
     paths = []
     for line in data.readlines():
 	data = line.strip().split(",")
