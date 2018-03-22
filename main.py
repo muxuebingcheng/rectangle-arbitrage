@@ -29,7 +29,7 @@ def main():
     data= data_process.format_receive_data(source_str)
     #生成路径基础信息
     #for test
-    path_info = generate_path_info.get_paths_from_local_data("data/paths_filtered.dat")
+    path_info = generate_path_info.get_paths_from_local_data("data/paths_ordered.dat")
     #path_info = generate_path_info.gen_path_info(data)
     #根据路径基础信息计算x起 a数量 和 四角套利公式
     return
