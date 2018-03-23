@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding:utf8 -*-
 
-import httplib
+import httplib2
 
 def send_message():
     return
