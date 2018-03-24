@@ -168,7 +168,7 @@ def main():
                     ws.send(result, opcode=0x1)
                     print("send message:"+result)
                 else:
-                    time.sleep(1)
+                    None
 
     else:
         print("认证失败")

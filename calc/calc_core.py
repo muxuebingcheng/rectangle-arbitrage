@@ -28,7 +28,6 @@ def calc_fork(currency_b):
         currency_info_str = r.lpop(redis_list_key)
         if (currency_info_str == None):
             print("数据空fork")
-            time.sleep(1)
             continue
         currency_info_str = currency_info_str.decode()
         currency_info_dict = json.loads(currency_info_str)
