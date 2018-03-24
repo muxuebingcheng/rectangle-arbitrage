@@ -47,8 +47,8 @@ def main():
     r = redis.Redis(connection_pool=pool)
     ws = create_connection("ws://47.104.136.5:8201")
 
-    currency_list=['mtn','hsr']
-    #currency_list = ['hsr','mtn','iost','wax','elf']
+    #currency_list=['mtn','hsr']
+    currency_list = ['hsr','mtn','iost','wax','elf']
 
     if ws.connected:
         # 链接成功 发送验证信息
