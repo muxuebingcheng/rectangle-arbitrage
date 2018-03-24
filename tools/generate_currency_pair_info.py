@@ -10,14 +10,23 @@ import time
     # u'bids': [[0.01105, 2.2376], [0.010981, 16.95], [0.010979, 34], [0.010978, 82.2761], [0.010972, 0.0007], [0.010936, 182.473], [0.010922, 86.7123]],
     # u'asks': [[0.011123, 34], [0.011124, 182.473], [0.01116, 34], [0.011168, 70.8], [0.011173, 56.52], [0.011253, 68], [0.011254, 88.9182]]}
 
-def gen_currency_pair_info(currency_pair_info,r):
+def format_name(ori_name):
+    return ori_name[:-3] + '-' + ori_name[-3:]
+
+def format_currency_name(ori_name):
+    return ori_name[:-3]
+
+def gen_currency_pair_info(currency_pair_info_str,currency_pair_info,currency_list,r):
 
     # 货币信息redis结构 value是时间戳 超过一定时间认为过期
     # key:hsr-eth value:[timestamp]
     # key:hsr-btc value:[timestamp]
-
     # redis list结构 攒齐一对 向后方每个redis list(每个redis list 对应一个处理进程)
-    currency_pair_name = currency_pair_info[0]['symbol']
+    if 'symbol' in currency_pair_info.keys():
+        print("symbol")
+    else:
+        print("数据未到齐")
+    currency_pair_name = format_name(currency_pair_info['symbol'])
     # 装载redis数据
     currency_pair_name_list = currency_pair_name.split('-');
     if currency_pair_name_list[1] == 'eth':
@@ -28,7 +37,6 @@ def gen_currency_pair_info(currency_pair_info,r):
 
         #for test
         r.set(key, timestamp_now)
-
         if r.get(key)=='':
             return
         else:
@@ -44,12 +52,9 @@ def gen_currency_pair_info(currency_pair_info,r):
             # 买价结构 : key:hrs-etc_ask_number_1 value:34
             # 卖价结构 : key:hrs-etc_ask_price_1 value:0.01105
             # 卖价结构 : key:hrs-etc_bid_number_1 value:2.2376
-            fill_price_number_to_redis(currency_pair_info[0],r)
+            fill_price_number_to_redis(currency_pair_info,r)
             # 放队列
-            r.lpush("list_1", currency_pair_name_list[0])
-            r.lpush("list_2", currency_pair_name_list[0])
-            r.lpush("list_3", currency_pair_name_list[0])
-            r.lpush("list_4", currency_pair_name_list[0])
+            put_redis_list(currency_pair_info_str,currency_pair_info,currency_list,r)
 
     # btc
     else:
@@ -58,7 +63,9 @@ def gen_currency_pair_info(currency_pair_info,r):
         key = currency_pair_name_list[0] + '-' + 'eth'
         r.set(currency_pair_name, timestamp_now)
         timestamp_redis = r.get(key)
-        if (timestamp_now - timestamp_redis > 1000):
+        if timestamp_redis==None:
+            timestamp_redis = timestamp_now
+        if (timestamp_now - int(timestamp_redis) > 1000):
             # 对应货币对信息过期
             r.delete(key)
         else:
@@ -68,9 +75,9 @@ def gen_currency_pair_info(currency_pair_info,r):
             # 买价结构 : key:hrs-etc_ask_number_1 value:34
             # 卖价结构 : key:hrs-etc_ask_price_1 value:0.01105
             # 卖价结构 : key:hrs-etc_bid_number_1 value:2.2376
-            fill_price_number_to_redis(currency_pair_info[0],r)
+            fill_price_number_to_redis(currency_pair_info,r)
             # 放队列
-            r.lpush("list_1", currency_pair_name_list[0])
+            put_redis_list(currency_pair_info_str,currency_pair_info,currency_list,r)
 
     return
 
@@ -91,6 +98,8 @@ def fill_price_number_to_redis(currency_info,r):
     keydict = {}
 
     #asks
+    currency_info['symbol'] = currency_info['symbol'][:-3]+'-'+currency_info['symbol'][-3:]
+
     ask_price_key_0 = currency_info['symbol'] + '_ask_price_0'
     ask_price_value_0 = ask_list[0][0]
     ask_num_key_0 = currency_info['symbol'] + '_ask_num_0'
@@ -171,10 +180,15 @@ def fill_price_number_to_redis(currency_info,r):
 
     keydict[bid_price_key_4] = bid_price_value_4
     keydict[bid_num_key_4] = bid_num_value_4
-
     r.mset(keydict)
 
     return
+
+def put_redis_list(currency_pair_info_str,currency_pair_info,currency_list,r):
+    for currency in currency_list:
+            format_name = format_currency_name(currency_pair_info['symbol'])
+            if format_name != currency:
+                r.lpush("list_"+currency,currency_pair_info_str)
 
 if __name__ == '__main__':
     unittest.main()
