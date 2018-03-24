@@ -9,6 +9,7 @@ import json
 import time
 from websocket import create_connection
 import websocket
+import socket
 
 from calc import calc_core
 from tools import generate_currency_pair_info
