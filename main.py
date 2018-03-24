@@ -3,16 +3,16 @@
 #standard packages
 import logging
 import redis
-import os,time
+import os
 from multiprocessing import Pool
 import json
 import time
-#log config
-from calc import calc_core
-from tools import generate_currency_pair_info
-import socket
 from websocket import create_connection
 import websocket
+
+from calc import calc_core
+from tools import generate_currency_pair_info
+
 
 logging.basicConfig(level=logging.DEBUG,\
 		format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',\
@@ -97,42 +97,42 @@ def main():
         data_info = ws.recv()
         print(data_info)
 
-        # ws.send('{"action":"SubMarketDepth","symbol":"iostbtc","platform":"huobi"}',
-        #         opcode=websocket.ABNF.OPCODE_TEXT)
-        # # 验证成功
-        # data_info = ws.recv()
-        # print(data_info)
-        #
-        # ws.send('{"action":"SubMarketDepth","symbol":"iosteth","platform":"huobi"}',
-        #         opcode=websocket.ABNF.OPCODE_TEXT)
-        # # 验证成功
-        # data_info = ws.recv()
-        # print(data_info)
-        #
-        # ws.send('{"action":"SubMarketDepth","symbol":"iostbtc","platform":"huobi"}',
-        #         opcode=websocket.ABNF.OPCODE_TEXT)
-        # # 验证成功
-        # data_info = ws.recv()
-        # print(data_info)
-        #
-        # ws.send('{"action":"SubMarketDepth","symbol":"waxeth","platform":"huobi"}',
-        #         opcode=websocket.ABNF.OPCODE_TEXT)
-        # # 验证成功
-        # data_info = ws.recv()
-        # print(data_info)
-        #
-        # ws.send('{"action":"SubMarketDepth","symbol":"waxbtc","platform":"huobi"}',
-        #         opcode=websocket.ABNF.OPCODE_TEXT)
-        # # 验证成功
-        # data_info = ws.recv()
-        # print(data_info)
-        #
-        #
-        # ws.send('{"action":"SubMarketDepth","symbol":"elfeth","platform":"huobi"}',
-        #         opcode=websocket.ABNF.OPCODE_TEXT)
-        # # 验证成功
-        # data_info = ws.recv()
-        # print(data_info)
+        ws.send('{"action":"SubMarketDepth","symbol":"iostbtc","platform":"huobi"}',
+                opcode=websocket.ABNF.OPCODE_TEXT)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"iosteth","platform":"huobi"}',
+                opcode=websocket.ABNF.OPCODE_TEXT)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"iostbtc","platform":"huobi"}',
+                opcode=websocket.ABNF.OPCODE_TEXT)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"waxeth","platform":"huobi"}',
+                opcode=websocket.ABNF.OPCODE_TEXT)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"waxbtc","platform":"huobi"}',
+                opcode=websocket.ABNF.OPCODE_TEXT)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+
+        ws.send('{"action":"SubMarketDepth","symbol":"elfeth","platform":"huobi"}',
+                opcode=websocket.ABNF.OPCODE_TEXT)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
 
         time.sleep(5)
 
@@ -151,7 +151,7 @@ def main():
                     continue
                 currency_pair_info_str=data_info
                 currency_pair_info = json.loads(data_info)
-                print(currency_pair_info_str)
+                # print(currency_pair_info_str)
                 generate_currency_pair_info.gen_currency_pair_info(currency_pair_info_str,currency_pair_info,currency_list,r);
         else:
             ws.send('{"type":"ping"}', opcode=websocket.ABNF.OPCODE_TEXT)

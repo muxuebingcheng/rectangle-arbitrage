@@ -5,7 +5,6 @@ from multiprocessing import Pool
 import json
 import redis
 import time
-import websocket
 from tools import generate_path_info
 
 def string_to_float_list(string_list):
@@ -21,8 +20,9 @@ def calc_fork(currency_b):
     print("计算货币:"+currency_b)
     #获取路径
     redis_list_key = 'list_'+currency_b
-    path_info = generate_path_info.get_paths_from_local_data('/Users/yangxi/projectpython/rectangle-arbitrage/data/paths_ordered.dat')
-    print(path_info)
+    # path_info = generate_path_info.get_paths_from_local_data('/Users/yangxi/projectpython/rectangle-arbitrage/data/paths_ordered.dat')
+    path_info = [[0, 1], [0, 1], [0, 1], [0, 1]]
+    # print(path_info)
     while 1:
         print("redis_list_key:"+redis_list_key)
         currency_info_str = r.lpop(redis_list_key)
@@ -35,7 +35,6 @@ def calc_fork(currency_b):
         currency_a=currency_info_dict['symbol']
         currency_a=currency_a[:-3]
         result = calc_profit(r,currency_a,currency_b,path_info)
-        print(result)
         time.sleep(1);
 
 
@@ -495,10 +494,9 @@ def calc_profit(r, currency_a,currency_b, path_list):
     x_b_amount = r.get(currency_b + '-' + 'eth' + '-amount')
     x_b_amount = x_b_amount.decode()
 
-    print(currency_a + '-' + 'eth' + '-price')
     x_a_price = r.get(currency_a + '-' + 'eth' + '-price')
     x_a_price = x_a_price.decode()
-    print(x_a_price)
+
 
     y_a_price = r.get(currency_a + '-' + 'btc' + '-price')
     y_a_price = y_a_price.decode()
@@ -544,14 +542,12 @@ def calc_profit(r, currency_a,currency_b, path_list):
     a_num_list = [a1_done, a2_done, a3_done, a4_done]
     a_price_list = [p1_done, p2_done, p3_done, p4_done]
 
-    print('------------------------------------------------------')
-    print(x_begin,x_end*0.998*0.998*0.998*0.998,x_begin < x_end*0.998*0.998*0.998*0.998,a_num_list,a_price_list)
+    # print('------------------------------------------------------')
+    # print(x_begin,x_end*0.998*0.998*0.998*0.998,x_begin*1.005 < x_end*0.998*0.998*0.998*0.998,a_num_list,a_price_list)
 
     if x_begin < x_end*0.998*0.998*0.998*0.998 and  x_end*0.998*0.998*0.998*0.998/x_begin > 1.005:
     # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998:
         result_list_redis(r,currency_a,currency_b,a_num_list,a_price_list)
-    else:
-        print('不赚钱')
     return 0
 
 def result_list_redis(r,currency_a,currency_b,a_num_list,a_price_record):
@@ -579,5 +575,6 @@ def result_list_redis(r,currency_a,currency_b,a_num_list,a_price_record):
     result_dict['action']='PutFourPointArbitrage'
     result_dict['path']=result_path_dict_list
     result_json =  json.dumps(result_dict)
-
+    print("赚钱路径")
+    print(result_json)
     r.lpush("list_result",result_json)

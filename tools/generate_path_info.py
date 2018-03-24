@@ -17,29 +17,45 @@
 # 降序 [[0.009411, 42.479], [0.00943, 25.8621], [0.009463, 74], [0.009464, 74], [0.00948, 148]]
 
 def get_paths_from_local_data(myfile):
-    data = open(myfile)
+    f = open(myfile,'r')
     paths = []
-    for line in data.readlines():
-	data = line.strip().split(",")
-	path1 = []
-	path2 = []
-	path3 = []
-	path4 = []
-	for item in data:
-	    if int(item)<20:#group1
-		path1.append(int(item)%10)
-	    elif int(item)>=20 and int(item)<30:#group2
-		path2.append(int(item)%20)
-	    elif int(item)>=30 and int(item)<40:#group3
-		path3.append(int(item)%30)
-	    else:
-		path4.append(int(item)%40)
-	path = []
-	path.append(path1)
-	path.append(path2)
-	path.append(path3)
-	path.append(path4)
-	paths.append(path)
+    data=[]
+    for line in f.readlines():
+        data.append(line.strip().split(","))
+    path1 = []
+    path2 = []
+    path3 = []
+    path4 = []
+    f.close()
+
+    # for item in data:
+    #     if int(item) < 20:  # group1
+    #         path1.append(int(item) % 10)
+    #     elif int(item) >= 20 and int(item) < 30:  # group2
+    #         path2.append(int(item) % 20)
+    #     elif int(item) >= 30 and int(item) < 40:  # group3
+    #         path3.append(int(item) % 30)
+    #     else:
+    #         path4.append(int(item) % 40)
+
+    for item in data:
+        list_10 = [int(c) <20 for c in item]
+        list_20 = [int(c)>=20 and int(c)<30 for c in item]
+        list_30 = [int(c)>=30 and int(c)<40 for c in item]
+        if True in list_10:#group1
+            path1.append([int(c)%10 for c in item])
+        elif True in list_20:#group2
+            path2.append(int(item)%20)
+        elif True in list_30:#group3
+            path3.append(int(item)%30)
+        else:
+            path4.append(int(item)%40)
+    path = []
+    path.append(path1)
+    path.append(path2)
+    path.append(path3)
+    path.append(path4)
+    paths.append(path)
     return paths
 
 

@@ -2,7 +2,6 @@
 # -*- coding:utf8 -*-
 
 import unittest
-import redis
 import time
 
 # currency_pair_info内容
@@ -23,9 +22,10 @@ def gen_currency_pair_info(currency_pair_info_str,currency_pair_info,currency_li
     # key:hsr-btc value:[timestamp]
     # redis list结构 攒齐一对 向后方每个redis list(每个redis list 对应一个处理进程)
     if 'symbol' in currency_pair_info.keys():
-        print("symbol")
+        a=1
     else:
         print("数据未到齐")
+        return
     currency_pair_name = format_name(currency_pair_info['symbol'])
     # 装载redis数据
     currency_pair_name_list = currency_pair_name.split('-');
