@@ -8,7 +8,7 @@ from multiprocessing import Pool
 import json
 import time
 from websocket import create_connection
-import websocket
+
 import socket
 
 from calc import calc_core
@@ -54,14 +54,14 @@ def main():
     if ws.connected:
         # 链接成功 发送验证信息
         ws.send('{"action":"Authentication","key":"02A3C2C6E4EF8FFB1A5DA176F9E8CC65"}',
-                opcode=websocket.ABNF.OPCODE_TEXT)
+                opcode=0x1)
         data_info = ws.recv()
         data_info_dict = json.loads(data_info)
         print(data_info_dict)
 
         # 精度信息
         ws.send('{"action":"GetSymbols","platform":"huobi"}',
-                opcode=websocket.ABNF.OPCODE_TEXT)
+                opcode=0x1)
         precision_info = ws.recv()
         precision_info_dict = json.loads(precision_info)
         print(precision_info_dict)
@@ -75,62 +75,62 @@ def main():
     if data_info_dict['msg'] == '认证成功':
         begin_timestamp = int(time.time())
         ws.send('{"action":"SubMarketDepth","symbol":"hsrbtc","platform":"huobi"}',
-                opcode=websocket.ABNF.OPCODE_TEXT)
+                opcode=0x1)
         #验证成功
         data_info = ws.recv()
         print(data_info)
 
         ws.send('{"action":"SubMarketDepth","symbol":"hsreth","platform":"huobi"}',
-                opcode=websocket.ABNF.OPCODE_TEXT)
+                opcode=0x1)
         # 验证成功
         data_info = ws.recv()
         print(data_info)
 
         ws.send('{"action":"SubMarketDepth","symbol":"mtnbtc","platform":"huobi"}',
-                opcode=websocket.ABNF.OPCODE_TEXT)
+                opcode=0x1)
         # 验证成功
         data_info = ws.recv()
         print(data_info)
 
         ws.send('{"action":"SubMarketDepth","symbol":"mtneth","platform":"huobi"}',
-                opcode=websocket.ABNF.OPCODE_TEXT)
+                opcode=0x1)
         # 验证成功
         data_info = ws.recv()
         print(data_info)
 
         ws.send('{"action":"SubMarketDepth","symbol":"iostbtc","platform":"huobi"}',
-                opcode=websocket.ABNF.OPCODE_TEXT)
+                opcode=0x1)
         # 验证成功
         data_info = ws.recv()
         print(data_info)
 
         ws.send('{"action":"SubMarketDepth","symbol":"iosteth","platform":"huobi"}',
-                opcode=websocket.ABNF.OPCODE_TEXT)
+                opcode=0x1)
         # 验证成功
         data_info = ws.recv()
         print(data_info)
 
         ws.send('{"action":"SubMarketDepth","symbol":"iostbtc","platform":"huobi"}',
-                opcode=websocket.ABNF.OPCODE_TEXT)
+                opcode=0x1)
         # 验证成功
         data_info = ws.recv()
         print(data_info)
 
         ws.send('{"action":"SubMarketDepth","symbol":"waxeth","platform":"huobi"}',
-                opcode=websocket.ABNF.OPCODE_TEXT)
+                opcode=0x1)
         # 验证成功
         data_info = ws.recv()
         print(data_info)
 
         ws.send('{"action":"SubMarketDepth","symbol":"waxbtc","platform":"huobi"}',
-                opcode=websocket.ABNF.OPCODE_TEXT)
+                opcode=0x1)
         # 验证成功
         data_info = ws.recv()
         print(data_info)
 
 
         ws.send('{"action":"SubMarketDepth","symbol":"elfeth","platform":"huobi"}',
-                opcode=websocket.ABNF.OPCODE_TEXT)
+                opcode=0x1)
         # 验证成功
         data_info = ws.recv()
         print(data_info)
@@ -155,17 +155,17 @@ def main():
                 # print(currency_pair_info_str)
                 generate_currency_pair_info.gen_currency_pair_info(currency_pair_info_str,currency_pair_info,currency_list,r);
         else:
-            ws.send('{"type":"ping"}', opcode=websocket.ABNF.OPCODE_TEXT)
+            ws.send('{"type":"ping"}', opcode=0x1)
             while 1:
                 end_timestamp = int(time.time())
                 if (end_timestamp - begin_timestamp > 10):
-                    ws.send('{"type":"ping"}', opcode=websocket.ABNF.OPCODE_TEXT)
+                    ws.send('{"type":"ping"}', opcode=0x1)
                     begin_timestamp = end_timestamp
                     print("send heart beat")
                     time.sleep(1)
                 result = r.lpop("list_result")
                 if(result != None):
-                    ws.send(result, opcode=websocket.ABNF.OPCODE_TEXT)
+                    ws.send(result, opcode=0x1)
                     print("send message:"+result)
                 else:
                     time.sleep(1)
