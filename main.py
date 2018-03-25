@@ -49,7 +49,7 @@ def main():
     ws = create_connection("ws://47.104.136.5:8201")
 
     #currency_list=['mtn','hsr']
-    currency_list = ['hsr','mtn','iost','wax','elf']
+    currency_list = ['trx','iost','hsr','wax','elf','itc','soc','dta','act','gnt','eth','blz','mtn','ht','zla','mds','nas','swftc','let','pay']
 
     if ws.connected:
         # 链接成功 发送验证信息
@@ -135,9 +135,183 @@ def main():
         data_info = ws.recv()
         print(data_info)
 
-        time.sleep(5)
+        ws.send('{"action":"SubMarketDepth","symbol":"elfbtc","platform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
 
-        p = Pool(5)
+        ws.send('{"action":"SubMarketDepth","symbol":"payeth","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"paybtc","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"leteth","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"letbtc","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"swftceth","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"swftcbtc","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"naseth","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"nasbtc","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"mdseth","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"mdsbtc","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"zlaeth","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"zlabtc","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"hteth","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"htbtc","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"blzeth","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"blzbtc","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"gnteth","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"gntbtc","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"acteth","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"actbtc","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"dtaeth","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"dtabtc","dtaform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"soceth","platform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"socbtc","platform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"trxeth","platform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"trxbtc","platform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"itceth","platform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        ws.send('{"action":"SubMarketDepth","symbol":"itcbtc","platform":"huobi"}',
+                opcode=0x1)
+        # 验证成功
+        data_info = ws.recv()
+        print(data_info)
+
+        time.sleep(10)
+
+        p = Pool(20)
         for x in currency_list:
             p.apply_async(calc_core.calc_fork, args=(x,))
         print('Waiting for all subprocesses done...')
@@ -145,8 +319,11 @@ def main():
         print('All subprocesses done.')
         pid = os.fork()
         if pid == 0:
+            i_count=0
             while 1:
                 data_info = ws.recv()
+                i_count = i_count+1
+                # print('-----------------------'+str(i_count)+'----'+str(time.time() * 1000))
                 #收到变化的价格 灌入redis list
                 if(data_info==None):
                     continue
@@ -154,6 +331,7 @@ def main():
                 currency_pair_info = json.loads(data_info)
                 # print(currency_pair_info_str)
                 generate_currency_pair_info.gen_currency_pair_info(currency_pair_info_str,currency_pair_info,currency_list,r);
+
         else:
             ws.send('{"type":"ping"}', opcode=0x1)
             while 1:
