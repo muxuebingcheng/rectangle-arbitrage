@@ -24,11 +24,12 @@ def calc_fork(currency_b):
     path_info = [[0, 1], [0, 1], [0, 1], [0, 1]]
     # print(path_info)
     while 1:
-        print("redis_list_key:"+redis_list_key)
+        #print("redis_list_key:"+redis_list_key)
         currency_info_str = r.lpop(redis_list_key)
         if (currency_info_str == None):
-            print("数据空fork")
+            #print("数据空fork")
             continue
+        #print("redis_list_key:" + redis_list_key)
         currency_info_str = currency_info_str.decode()
         currency_info_dict = json.loads(currency_info_str)
         currency_a=currency_info_dict['symbol']
@@ -39,10 +40,12 @@ def calc_fork(currency_b):
 
 def calc_profit(r, currency_a,currency_b, path_list):
     #currency_name = mtn
+    #os.pid
+    pid =str(os.getpid())
     if currency_a == currency_b:
         return 0,0,0,0
     #检查货币信息
-    print(currency_a+'----------'+currency_b)
+    print('pid: ' +pid+ '++'+currency_a+'----------'+currency_b)
     if r.get(currency_b  + '-'+ 'btc') == '':
         return
     if r.get(currency_b + '-' + 'eth') == '':
@@ -82,7 +85,18 @@ def calc_profit(r, currency_a,currency_b, path_list):
 
     currency_x_a_info_list = r.mget(currency_x_a_list)
     currency_x_a_info_list=string_to_float_list(currency_x_a_info_list)
-    # print(currency_x_a_info_list)
+
+    str_print=""
+    ii = 1;
+    # for elem in currency_x_a_info_list:
+    #     str_print = str_print + '^' + str(elem)
+    #     if ii == 10:
+    #         str_print = str_print + "*********"
+    #     ii = ii+1
+    # ii = 1;
+    # print('pid: ' + pid + '--' + currency_a + '-eth-'+str_print)
+
+    str_print = ""
 
     # mtn的价格 x b
     key_pre = currency_b + '-' + 'eth'
@@ -103,7 +117,17 @@ def calc_profit(r, currency_a,currency_b, path_list):
     ]
     currency_x_b_info_list = r.mget(currency_x_b_list)
     currency_x_b_info_list = string_to_float_list(currency_x_b_info_list)
-    # print(currency_x_b_info_list)
+
+    # str_print = ""
+    # for elem in currency_x_b_info_list:
+    #     str_print = str_print + '^' + str(elem)
+    #     if ii == 10:
+    #         str_print = str_print + "*********"
+    #     ii = ii + 1
+    # ii = 1;
+    # print('pid: ' + pid + '--' + currency_b + '-eth-' + str_print)
+    #
+    # str_print = ""
     #前20是mtn价格和数量 后20是hrs价格和数量
 
     #btc对应信息
@@ -126,7 +150,17 @@ def calc_profit(r, currency_a,currency_b, path_list):
     ]
     currency_y_a_info_list = r.mget(currency_y_a_list)
     currency_y_a_info_list = string_to_float_list(currency_y_a_info_list)
-    # print(currency_y_a_info_list)
+
+    # str_print = ""
+    # for elem in currency_y_a_info_list:
+    #     str_print = str_print + '^' + str(elem)
+    #     if ii == 10:
+    #         str_print = str_print + "*********"
+    #     ii = ii + 1
+    # ii = 1;
+    # print('pid: ' + pid + '--' + currency_a + '-btc-' + str_print)
+    #
+    # str_print = ""
 
     # mtn的价格 y b
     key_pre = currency_b + '-' + 'btc'
@@ -147,7 +181,18 @@ def calc_profit(r, currency_a,currency_b, path_list):
     ]
     currency_y_b_info_list = r.mget(currency_y_b_list)
     currency_y_b_info_list = string_to_float_list(currency_y_b_info_list)
-    # print(currency_y_b_info_list)
+
+
+    # for elem in currency_y_b_info_list:
+    #     str_print = str_print + '^' + str(elem)
+    #     if ii == 10:
+    #         str_print = str_print + "*********"
+    #     ii = ii + 1
+    # ii = 1;
+    # print('pid: ' + pid + '--' + currency_b + '-btc-' + str_print)
+
+
+
 
     x_a_bids_price = [0] * 5
     x_a_bids_num = [0] * 5
@@ -295,9 +340,9 @@ def calc_profit(r, currency_a,currency_b, path_list):
                 # 买(eth->hrs) bid
                 # hrs count
                 # "bids":[[0.01105,2.2376],[0.010981,16.95],[0.010979,34],[0.010978,82.2761],[0.010972,0.0007]]
-                x_part_0_a_cout = x_part_0_a_cout + x_a_bids_num[ai]
+                x_part_0_a_cout = x_part_0_a_cout + x_a_asks_num[ai]
                 # x count                               price
-                x_part_0_x_cout = x_part_0_x_cout + x_b_bids_price[ai] * x_a_bids_num[ai]
+                x_part_0_x_cout = x_part_0_x_cout + x_b_asks_price[ai] * x_a_asks_num[ai]
                 1
             i = i + 1
         elif i == 1:
@@ -309,7 +354,7 @@ def calc_profit(r, currency_a,currency_b, path_list):
                 # "asks":[[0.000876,88.1],[0.000877,2],[0.000879,10],[0.00088,1],[0.000881,1]]
                 # x_part_0_x_cout 0.0052598095
                 # x_part_0_a_cout 19.1876
-                x_part_1_a_count = x_part_1_a_count + y_a_asks_num[ai]
+                x_part_1_a_count = x_part_1_a_count + y_a_bids_num[ai]
                 # if x_part_0_a_cout > x_part_1_a_count:
                 #     continue
                 # else:
@@ -321,15 +366,15 @@ def calc_profit(r, currency_a,currency_b, path_list):
             x_part_1_a_count_for_calc_y = x_part_1_a_count
             if x_part_1_a_count == x_part_0_a_cout:
                 for ai in part:
-                    if x_part_1_a_count_for_calc_y - y_a_asks_num[ai] > 0:
-                        x_part_1_y_count = x_part_1_y_count + y_a_asks_num[ai] * y_a_asks_price[ai]
-                        x_part_1_a_count_for_calc_y = x_part_1_a_count_for_calc_y - y_a_asks_num[ai]
+                    if x_part_1_a_count_for_calc_y - y_a_bids_num[ai] > 0:
+                        x_part_1_y_count = x_part_1_y_count + y_a_bids_num[ai] * y_a_bids_price[ai]
+                        x_part_1_a_count_for_calc_y = x_part_1_a_count_for_calc_y - y_a_bids_num[ai]
                     else:
-                        x_part_1_y_count = x_part_1_y_count + x_part_1_a_count_for_calc_y * y_a_asks_price[ai]
+                        x_part_1_y_count = x_part_1_y_count + x_part_1_a_count_for_calc_y * y_a_bids_price[ai]
                         break
             else:
                 for ai in part:
-                    x_part_1_y_count = x_part_1_y_count + y_a_asks_num[ai] * y_a_asks_price[ai]
+                    x_part_1_y_count = x_part_1_y_count + y_a_bids_num[ai] * y_a_bids_price[ai]
             # 如果 part2 a数量小于 part1的a数量 重新计算x起
             # if x_part_0_a_cout > x_part_1_a_count:
             i = i + 1
@@ -341,7 +386,7 @@ def calc_profit(r, currency_a,currency_b, path_list):
                 # mtn count
                 # "bids": [[2.159e-5, 924.04], [2.153e-5, 1330], [2.15e-5, 5000], [2.148e-5, 187.24], [2.141e-5, 8719]]
                 # x_part_1_y_count part2的 y count
-                x_part_2_y_count_ax = x_part_2_y_count_ax + y_b_bids_num[ai] * y_b_bids_price[ai]
+                x_part_2_y_count_ax = x_part_2_y_count_ax + y_b_asks_num[ai] * y_b_asks_price[ai]
             if x_part_1_y_count > x_part_2_y_count_ax:
                 # 如果part3的y数量 小于 part2计算处的y数量 那么part3的y数量等于part3的数量和
                 x_part_2_y_count = x_part_2_y_count_ax
@@ -352,17 +397,17 @@ def calc_profit(r, currency_a,currency_b, path_list):
             if (x_part_2_y_count == x_part_1_y_count):
                 # 如果part3的y 等于part2y 说明 已part2y 为主 计算b可取的num
                 for ai in part:
-                    if x_part_1_y_count_for_calc - y_b_bids_num[ai] * y_b_bids_price[ai] > 0:
-                        x_part_2_b_count = x_part_2_b_count + y_b_bids_num[ai]
-                        x_part_1_y_count_for_calc = x_part_1_y_count_for_calc - y_b_bids_num[ai] * \
-                                                                                y_b_bids_price[ai]
+                    if x_part_1_y_count_for_calc - y_b_asks_num[ai] * y_b_asks_price[ai] > 0:
+                        x_part_2_b_count = x_part_2_b_count + y_b_asks_num[ai]
+                        x_part_1_y_count_for_calc = x_part_1_y_count_for_calc - y_b_asks_num[ai] * \
+                                                                                y_b_asks_price[ai]
                     else:
-                        x_part_2_b_count = x_part_2_b_count + x_part_1_y_count_for_calc / y_b_bids_price[ai]
+                        x_part_2_b_count = x_part_2_b_count + x_part_1_y_count_for_calc / y_b_asks_price[ai]
                         break
             else:
                 # 如果part3的y 小于part2y 说明 已part3为主 b的num直接累加即可
                 for ai in part:
-                    x_part_2_b_count = x_part_2_b_count + y_b_bids_num[ai]
+                    x_part_2_b_count = x_part_2_b_count + y_b_asks_num[ai]
             i = i + 1
         elif i == 3:
             for ai in part:
@@ -374,7 +419,7 @@ def calc_profit(r, currency_a,currency_b, path_list):
                 # x_part_2_b_count part 3 的b
                 # x_part_3_b_count
                 # x_part_3_x_count
-                x_part_3_b_count = x_part_3_b_count + x_b_asks_num[ai]
+                x_part_3_b_count = x_part_3_b_count + x_b_bids_num[ai]
 
             if (x_part_2_b_count < x_part_3_b_count):
                 x_part_3_b_count = x_part_2_b_count
@@ -382,17 +427,17 @@ def calc_profit(r, currency_a,currency_b, path_list):
             x_part_3_b_count_for_calc = x_part_3_b_count
             count_record = 0
             for ai in part:
-                if x_part_3_b_count_for_calc - x_b_asks_num[ai] > 0:
-                    x_end = x_end + x_b_asks_num[ai] * x_b_asks_price[ai]
-                    x_part_3_b_count_for_calc = x_part_3_b_count_for_calc - x_b_asks_num[ai]
+                if x_part_3_b_count_for_calc - x_b_bids_num[ai] > 0:
+                    x_end = x_end + x_b_bids_num[ai] * x_b_bids_price[ai]
+                    x_part_3_b_count_for_calc = x_part_3_b_count_for_calc - x_b_bids_num[ai]
 
-                    a4_num_record = a4_num_record + x_b_asks_num[ai]
-                    a4_price_record = x_b_asks_price[ai]
+                    a4_num_record = a4_num_record + x_b_bids_num[ai]
+                    a4_price_record = x_b_bids_price[ai]
                 else:
-                    x_end = x_end + x_part_3_b_count_for_calc * x_b_asks_price[ai]
+                    x_end = x_end + x_part_3_b_count_for_calc * x_b_bids_price[ai]
 
                     a4_num_record = a4_num_record + x_part_3_b_count_for_calc
-                    a4_price_record = x_b_asks_price[ai]
+                    a4_price_record = x_b_bids_price[ai]
                     break
             i = i + 1
 
@@ -414,18 +459,18 @@ def calc_profit(r, currency_a,currency_b, path_list):
     x_part_2_b_count_for_calc = x_part_3_b_count
     count_record = 0
     for ai in path_list[2]:
-        if x_part_2_b_count_for_calc - y_b_bids_num[ai] > 0:
+        if x_part_2_b_count_for_calc - y_b_asks_num[ai] > 0:
 
-            x_part_2_y_count_begin = x_part_2_y_count_begin + y_b_bids_num[ai] * y_b_bids_price[ai]
-            x_part_2_b_count_for_calc = x_part_2_b_count_for_calc - y_b_bids_num[ai]
+            x_part_2_y_count_begin = x_part_2_y_count_begin + y_b_asks_num[ai] * y_b_asks_price[ai]
+            x_part_2_b_count_for_calc = x_part_2_b_count_for_calc - y_b_asks_num[ai]
 
-            a3_num_record = a3_num_record + y_b_bids_num[ai]
-            a3_price_record = y_b_bids_price[ai]
+            a3_num_record = a3_num_record + y_b_asks_num[ai]
+            a3_price_record = y_b_asks_price[ai]
         else:
-            x_part_2_y_count_begin = x_part_2_y_count_begin + x_part_2_b_count_for_calc * y_b_bids_price[ai]
+            x_part_2_y_count_begin = x_part_2_y_count_begin + x_part_2_b_count_for_calc * y_b_asks_price[ai]
 
             a3_num_record = a3_num_record + x_part_2_b_count_for_calc
-            a3_price_record = y_b_bids_price[ai]
+            a3_price_record = y_b_asks_price[ai]
             break
 
     # x_part_2_y_count求出来了 求 x_part_1_a_count
@@ -438,16 +483,16 @@ def calc_profit(r, currency_a,currency_b, path_list):
 
     x_part_1_y_count_for_calc = x_part_2_y_count_begin
     for ai in path_list[1]:
-        if x_part_1_y_count_for_calc - y_a_asks_price[ai] * y_a_asks_num[ai] > 0:
-            x_part_1_a_count_begin = x_part_1_a_count_begin + y_a_asks_num[ai]
-            x_part_1_y_count_for_calc = x_part_1_y_count_for_calc - y_a_asks_price[ai] * y_a_asks_num[ai]
-            a2_num_record = a2_num_record + y_a_asks_num[ai]
-            a2_price_record = y_a_asks_price[ai]
+        if x_part_1_y_count_for_calc - y_a_bids_price[ai] * y_a_bids_num[ai] > 0:
+            x_part_1_a_count_begin = x_part_1_a_count_begin + y_a_bids_num[ai]
+            x_part_1_y_count_for_calc = x_part_1_y_count_for_calc - y_a_bids_price[ai] * y_a_bids_num[ai]
+            a2_num_record = a2_num_record + y_a_bids_num[ai]
+            a2_price_record = y_a_bids_price[ai]
         else:
-            x_part_1_a_count_begin = x_part_1_a_count_begin + x_part_1_y_count_for_calc / y_a_asks_price[ai]
+            x_part_1_a_count_begin = x_part_1_a_count_begin + x_part_1_y_count_for_calc / y_a_bids_price[ai]
 
-            a2_num_record = a2_num_record + x_part_1_y_count_for_calc / y_a_asks_price[ai]
-            a2_price_record = y_a_asks_price[ai]
+            a2_num_record = a2_num_record + x_part_1_y_count_for_calc / y_a_bids_price[ai]
+            a2_price_record = y_a_bids_price[ai]
             break;
 
     # 最后一步算x起
@@ -461,23 +506,23 @@ def calc_profit(r, currency_a,currency_b, path_list):
     x_begin = 0
     x_part_0_a_count_for_calc = x_part_1_a_count_begin
     for ai in path_list[0]:
-        if x_part_0_a_count_for_calc - x_a_bids_num[ai] > 0:
+        if x_part_0_a_count_for_calc - x_a_asks_num[ai] > 0:
 
-            x_part_0_a_count_begin = x_part_0_a_count_begin + x_a_bids_num[ai]
-            x_part_0_a_count_for_calc = x_part_0_a_count_for_calc - x_a_bids_num[ai]
+            x_part_0_a_count_begin = x_part_0_a_count_begin + x_a_asks_num[ai]
+            x_part_0_a_count_for_calc = x_part_0_a_count_for_calc - x_a_asks_num[ai]
 
-            a1_num_record = a1_num_record + x_a_bids_num[ai]
-            a1_price_record = x_a_bids_price[ai]
+            a1_num_record = a1_num_record + x_a_asks_num[ai]
+            a1_price_record = x_a_asks_price[ai]
 
-            x_begin = x_begin + x_a_bids_num[ai] * x_a_bids_price[ai]
+            x_begin = x_begin + x_a_asks_num[ai] * x_a_asks_price[ai]
 
         else:
             x_part_0_a_count_begin = x_part_0_a_count_begin + x_part_0_a_count_for_calc
 
             a1_num_record = a1_num_record + x_part_0_a_count_for_calc
-            a1_price_record = x_a_bids_price[ai]
+            a1_price_record = x_a_asks_price[ai]
 
-            x_begin = x_begin + x_part_0_a_count_for_calc * x_a_bids_price[ai]
+            x_begin = x_begin + x_part_0_a_count_for_calc * x_a_asks_price[ai]
             break
 
     #a_num_list = [a1_num_record, a2_num_record, a3_num_record, a4_num_record]
@@ -542,7 +587,7 @@ def calc_profit(r, currency_a,currency_b, path_list):
     a_price_list = [p1_done, p2_done, p3_done, p4_done]
 
     # print('------------------------------------------------------')
-    # print(x_begin,x_end*0.998*0.998*0.998*0.998,x_begin*1.005 < x_end*0.998*0.998*0.998*0.998,a_num_list,a_price_list)
+    #print(x_begin,x_end*0.998*0.998*0.998*0.998,x_begin*1.005 < x_end*0.998*0.998*0.998*0.998,a_num_list,a_price_list)
 
     if x_begin < x_end*0.998*0.998*0.998*0.998 and  x_end*0.998*0.998*0.998*0.998/x_begin > 1.005:
     # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998:
@@ -575,5 +620,5 @@ def result_list_redis(r,currency_a,currency_b,a_num_list,a_price_record):
     result_dict['path']=result_path_dict_list
     result_json =  json.dumps(result_dict)
     print("赚钱路径")
-    print(result_json)
+    print('pid: ' +str(os.getpid())+'-'+currency_a+'-'+currency_b+'--'+result_json)
     r.lpush("list_result",result_json)
