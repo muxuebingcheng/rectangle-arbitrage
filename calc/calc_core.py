@@ -17,7 +17,7 @@ def calc_fork(currency_path):
     # pool = redis.ConnectionPool(host='127.0.0.1', port=6379,
     #                             decode_responses=True)  # host是redis主机，需要redis服务端和客户端都起着 redis默认端口是6379
     # r = redis.Redis(connection_pool=pool)
-    r=redis.Redis(host='127.0.0.1', port=6379)
+    r=redis.Redis(host='127.0.0.1', port=6380)
     print("计算货币:"+currency_path[0])
     #获取路径
     redis_list_key = 'list_'+currency_path[0]
