@@ -13,14 +13,14 @@ def string_to_float_list(string_list):
     return string_list
 
 #def calc_fork(currency_b,path_list):
-def calc_fork(currency_path):
+def calc_fork(currency_path_platform):
     # pool = redis.ConnectionPool(host='127.0.0.1', port=6379,
     #                             decode_responses=True)  # host是redis主机，需要redis服务端和客户端都起着 redis默认端口是6379
     # r = redis.Redis(connection_pool=pool)
     r=redis.Redis(host='127.0.0.1', port=6380)
-    print("计算货币:"+currency_path[0])
+    print("计算货币:"+currency_path_platform[0])
     #获取路径
-    redis_list_key = 'list_'+currency_path[0]
+    redis_list_key = 'list_'+currency_path_platform[0]
     # path_info = generate_path_info.get_paths_from_local_data('/Users/yangxi/projectpython/rectangle-arbitrage/data/paths_ordered.dat')
     # path_info = [[0, 1], [0, 1], [0, 1], [0, 1]]
     # print(path_info)
@@ -35,10 +35,10 @@ def calc_fork(currency_path):
         currency_info_dict = json.loads(currency_info_str)
         currency_a=currency_info_dict['symbol']
         currency_a=currency_a[:-3]
-        result = calc_profit(r,currency_a,currency_path[0],currency_path[1])
+        result = calc_profit(r,currency_a,currency_path_platform[0],currency_path_platform[1],currency_path_platform[2])
 
 
-def calc_profit(r, currency_a,currency_b, path_list):
+def calc_profit(r, currency_a,currency_b, path_list,platform):
     #currency_name = mtn
     #os.pid
     pid =str(os.getpid())
@@ -593,11 +593,11 @@ def calc_profit(r, currency_a,currency_b, path_list):
         print('pid: ' + pid + '--', x_begin , x_end * 0.998 * 0.998 * 0.998 * 0.998,
               x_begin * 1.005 < x_end * 0.998 * 0.998 * 0.998 * 0.998, a_num_list, a_price_list)
         print(path)
-        result_list_redis(r, currency_a, currency_b, a_num_list, a_price_list)
+        result_list_redis(r, currency_a, currency_b, a_num_list, a_price_list,platform)
 
     return 0
 
-def result_list_redis(r,currency_a,currency_b,a_num_list,a_price_record):
+def result_list_redis(r,currency_a,currency_b,a_num_list,a_price_record,platform):
     # {"path": [{"from": "iost", "to": "eth", "type": "buy", "market": "false", "amount": "1", "price": "1"},
     #           {"from": "iost", "to": "btc", "type": "sell", "market": "false", "amount": "1", "price": "1"},
     #           {"from": "ht", "to": "btc", "type": "buy", "market": "false", "amount": "1", "price": "1"},
@@ -618,7 +618,7 @@ def result_list_redis(r,currency_a,currency_b,a_num_list,a_price_record):
     path4 = {'from': currency_b, 'to': 'eth', 'type': 'sell', 'market': 'false', 'amount': a_num_list[3],'price': a_price_record[3]}
 
     result_path_dict_list=[path1,path2,path3,path4]
-    result_dict['platform']='huobi'
+    result_dict['platform']=platform
     result_dict['action']='PutFourPointArbitrage'
     result_dict['path']=result_path_dict_list
     result_json =  json.dumps(result_dict)
