@@ -18,7 +18,7 @@ def calc_fork(currency_path_platform):
     #                             decode_responses=True)  # host是redis主机，需要redis服务端和客户端都起着 redis默认端口是6379
     # r = redis.Redis(connection_pool=pool)
     r=redis.Redis(host='127.0.0.1', port=6380)
-    print("计算货币:"+currency_path_platform[0])
+    #print("计算货币:"+currency_path_platform[0])
     #获取路径
     redis_list_key = 'list_'+currency_path_platform[0]
     # path_info = generate_path_info.get_paths_from_local_data('/Users/yangxi/projectpython/rectangle-arbitrage/data/paths_ordered.dat')
@@ -45,7 +45,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
     if currency_a == currency_b:
         return 0,0,0,0
     #检查货币信息
-    print('pid: ' +pid+ '++'+currency_a+'----------'+currency_b)
+    #print('pid: ' +pid+ '++'+currency_a+'----------'+currency_b)
     if r.get(currency_b  + '-'+ 'btc') == '':
         return
     if r.get(currency_b + '-' + 'eth') == '':
@@ -585,7 +585,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
         # print('------------------------------------------------------')
         # print('pid: ' + pid + '--', x_begin * 1.05, x_end * 0.998 * 0.998 * 0.998 * 0.998,
         #        x_begin * 1.005 < x_end * 0.998 * 0.998 * 0.998 * 0.998, a_num_list, a_price_list)
-        print(path)
+        #print(path)
         if x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin < 1.005:
             break
         # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998 and x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin > 1.005:
