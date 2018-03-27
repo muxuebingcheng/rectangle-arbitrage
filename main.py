@@ -133,6 +133,7 @@ def main(conf_file_name):
                 if(result != None):
                     if is_send_message =='no':
                         print('不发送')
+                        continue
                     ws.send(result, opcode=0x1)
                     print("send message:"+result)
                 else:
