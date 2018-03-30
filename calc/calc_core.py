@@ -608,7 +608,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
                              )
 
         log_switch = r.get('log_switch')
-        if(log_switch.decode() == 'TURE'):
+        if(log_switch.decode() == currency_b):
             for log in log_info_list:
                 logger.info(log)
 
