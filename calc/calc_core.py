@@ -470,8 +470,8 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
                 x_part_2_y_count_begin = x_part_2_y_count_begin + x_part_2_b_count_for_calc * y_b_asks_price[ai]
 
                 # amount  和 price 分别是什么数量和价格—-btc数量 hsrbtc的最高卖价
-                a3_price_record = y_b_asks_price[0]
-                a3_num_record = a3_num_record + x_part_2_b_count_for_calc*y_b_asks_price[0]
+                a3_price_record = y_b_asks_price[ai]
+                a3_num_record = a3_num_record + x_part_2_b_count_for_calc*y_b_asks_price[ai]
                 break
 
 
