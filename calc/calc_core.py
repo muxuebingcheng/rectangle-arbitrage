@@ -437,7 +437,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
                         a4_price_record = x_b_bids_price[ai]
                     else:
                         x_end = x_end + x_part_3_b_count_for_calc * x_b_bids_price[ai]
-
+                        # amount  和 price 分别是什么数量和价格—hsr数量 hsreth最低买价
                         a4_num_record = a4_num_record + x_part_3_b_count_for_calc
                         a4_price_record = x_b_bids_price[ai]
                         break
@@ -464,14 +464,17 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
                 x_part_2_y_count_begin = x_part_2_y_count_begin + y_b_asks_num[ai] * y_b_asks_price[ai]
                 x_part_2_b_count_for_calc = x_part_2_b_count_for_calc - y_b_asks_num[ai]
 
-                a3_num_record = a3_num_record + y_b_asks_num[ai]
+                a3_num_record = a3_num_record + y_b_asks_num[ai] * y_b_asks_price[ai]
                 a3_price_record = y_b_asks_price[ai]
             else:
                 x_part_2_y_count_begin = x_part_2_y_count_begin + x_part_2_b_count_for_calc * y_b_asks_price[ai]
 
-                a3_num_record = a3_num_record + x_part_2_b_count_for_calc
-                a3_price_record = y_b_asks_price[ai]
+                # amount  和 price 分别是什么数量和价格—-btc数量 hsrbtc的最高卖价
+                a3_price_record = y_b_asks_price[0]
+                a3_num_record = a3_num_record + x_part_2_b_count_for_calc*y_b_asks_price[0]
                 break
+
+
 
         # x_part_2_y_count求出来了 求 x_part_1_a_count
         # 卖(hrs->btc) ask
@@ -480,6 +483,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
         # "asks":[[0.000876,8.1],[0.000877,2],[0.000879,10],[0.00088,1],[0.000881,1]]
         # "asks": [[0.000876, 88.1], [0.000877, 2], [0.000879, 25], [0.00088, 10.78], [0.000881, 2]]
         # y_a_asks_price
+        # amount  和 price 分别是什么数量和价格—swftc数量 swftcbtc最低买价
 
         x_part_1_y_count_for_calc = x_part_2_y_count_begin
         for ai in path[1]:
@@ -494,6 +498,8 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
                 a2_num_record = a2_num_record + x_part_1_y_count_for_calc / y_a_bids_price[ai]
                 a2_price_record = y_a_bids_price[ai]
                 break;
+
+
 
         # 最后一步算x起
         # part1 的 a 已经反推出来 最后反推x起
@@ -511,10 +517,11 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
                 x_part_0_a_count_begin = x_part_0_a_count_begin + x_a_asks_num[ai]
                 x_part_0_a_count_for_calc = x_part_0_a_count_for_calc - x_a_asks_num[ai]
 
-                a1_num_record = a1_num_record + x_a_asks_num[ai]
+
                 a1_price_record = x_a_asks_price[ai]
 
                 x_begin = x_begin + x_a_asks_num[ai] * x_a_asks_price[ai]
+                a1_num_record = x_begin
 
             else:
                 x_part_0_a_count_begin = x_part_0_a_count_begin + x_part_0_a_count_for_calc
@@ -523,6 +530,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
                 a1_price_record = x_a_asks_price[ai]
 
                 x_begin = x_begin + x_part_0_a_count_for_calc * x_a_asks_price[ai]
+                a1_num_record = x_begin
                 break
 
         # a_num_list = [a1_num_record, a2_num_record, a3_num_record, a4_num_record]
