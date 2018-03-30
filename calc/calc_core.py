@@ -594,8 +594,13 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
         # print('pid: ' + pid + '--', x_begin * 1.05, x_end * 0.998 * 0.998 * 0.998 * 0.998,
         #        x_begin * 1.005 < x_end * 0.998 * 0.998 * 0.998 * 0.998, a_num_list, a_price_list)
         #print(path)
+
+
         if x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin < 1.005:
             break
+
+        if float(a1_done) *  float(a2_done) * float(a3_done)* float(a4_done) == float('0'):
+            continue
         # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998 and x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin > 1.005:
         #     # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998:
         print('pid: ' + pid + '--', x_begin , x_end * 0.998 * 0.998 * 0.998 * 0.998,
