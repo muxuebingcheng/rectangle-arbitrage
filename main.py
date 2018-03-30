@@ -2,7 +2,6 @@
 # -*- coding:utf8 -*-
 #standard packages
 import sys
-import logging
 import redis
 import os
 from multiprocessing import Pool
@@ -10,19 +9,13 @@ import json
 import time
 from websocket import create_connection
 import configparser
+import tools.logger
 
-import socket
 
 from calc import calc_core
 from tools import generate_currency_pair_info
 
-
-logging.basicConfig(level=logging.DEBUG,\
-		format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',\
-		datefmt='%m-%d %H:%M',\
-		filename='log/debug.log',\
-		filemode='a')
-
+logger = tools.logger.Logger('mainlog','main.log')
 
 def fill_precision_info(precision_info_dict,r):
     for precision_info in precision_info_dict :
@@ -63,19 +56,18 @@ def main(conf_file_name):
                 opcode=0x1)
         data_info = ws.recv()
         data_info_dict = json.loads(data_info)
-        print(data_info_dict)
-
+        logger.info(data_info_dict)
         # 精度信息
         ws.send('{"action":"GetSymbols","platform":"'+platform+'"}',
                 opcode=0x1)
         precision_info = ws.recv()
         precision_info_dict = json.loads(precision_info)
-        print(precision_info_dict)
+        logger.info(precision_info_dict)
         precision_info_dict = precision_info_dict['symbols']
         fill_precision_info(precision_info_dict, r)
     else:
         # 连接失败
-        print("failed")
+        logger.info("failed")
         return
     # 校验验证信息
     if data_info_dict['msg'] == '认证成功':
@@ -84,15 +76,15 @@ def main(conf_file_name):
             send_message_btc='{"action":"SubMarketDepth","symbol":"' +currency +'btc","platform":"'+platform+'"}'
             ws.send(send_message_btc)
             data_info=ws.recv()
-            print(data_info)
+            logger.info(data_info)
             send_message_eth = '{"action":"SubMarketDepth","symbol":"' +currency+'eth","platform":"'+platform+'"}'
             ws.send(send_message_eth)
             data_info = ws.recv()
-            print(data_info)
+            logger.info(data_info)
         time.sleep(10)
         p = Pool(len(currency_list))
         path = os.path.abspath(os.curdir) + '/data' + '/paths_result.dat'
-        print(path)
+        logger.info(path)
         f = open(path, 'r')
         path_list = []
         for line in f.readlines():
@@ -103,9 +95,9 @@ def main(conf_file_name):
         for x in currency_list:
             currency_path = (x, path_list,platform)
             p.apply_async(calc_core.calc_fork, args=(currency_path,))
-        print('Waiting for all subprocesses done...')
+        logger.info('Waiting for all subprocesses done...')
         p.close()
-        print('All subprocesses done.')
+        logger.info('All subprocesses done.')
         pid = os.fork()
         if pid == 0:
             i_count=0
@@ -127,20 +119,20 @@ def main(conf_file_name):
                 if (end_timestamp - begin_timestamp > 10):
                     ws.send('{"type":"ping"}', opcode=0x1)
                     begin_timestamp = end_timestamp
-                    print("send heart beat")
+                    logger.info('send heart beat')
                     time.sleep(1)
                 result = r.lpop("list_result")
                 if(result != None):
                     if is_send_message =='no':
-                        print('不发送')
+                        logger.info('不发送')
                         continue
                     ws.send(result, opcode=0x1)
-                    print("send message:"+result)
+                    logger.info('send message:'+result)
                 else:
                     None
 
     else:
-        print("认证失败")
+        logger.info('认证失败')
 
 if __name__ == "__main__":
     conf_file_name = sys.argv[1]
