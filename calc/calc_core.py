@@ -490,7 +490,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
             if x_part_1_y_count_for_calc - y_a_bids_price[ai] * y_a_bids_num[ai] > 0:
                 x_part_1_a_count_begin = x_part_1_a_count_begin + y_a_bids_num[ai]
                 x_part_1_y_count_for_calc = x_part_1_y_count_for_calc - y_a_bids_price[ai] * y_a_bids_num[ai]
-                a2_num_record = a2_num_record + y_a_bids_num[ai]
+                a2_num_record = a2_num_record + x_part_1_y_count_for_calc / y_a_bids_price[ai]
                 a2_price_record = y_a_bids_price[ai]
             else:
                 x_part_1_a_count_begin = x_part_1_a_count_begin + x_part_1_y_count_for_calc / y_a_bids_price[ai]
