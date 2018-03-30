@@ -37,7 +37,10 @@ def calc_fork(currency_path_platform):
         currency_info_dict = json.loads(currency_info_str)
         currency_a=currency_info_dict['symbol']
         currency_a=currency_a[:-3]
-        result = calc_profit(r,currency_a,currency_path_platform[0],currency_path_platform[1],currency_path_platform[2],logger)
+        try:
+            calc_profit(r,currency_a,currency_path_platform[0],currency_path_platform[1],currency_path_platform[2],logger)
+        except Exception as e:
+            logger.info(str(e))
 
 
 def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
