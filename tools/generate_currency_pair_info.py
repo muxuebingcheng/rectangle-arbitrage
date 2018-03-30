@@ -58,7 +58,7 @@ def gen_currency_pair_info(currency_pair_info_str,currency_pair_info,currency_li
 
     # btc
     else:
-        timestamp_now = time.time() * 1000
+        timestamp_now = int(round(time.time() * 1000))
         # 先找配对的eth
         key = currency_pair_name_list[0] + '-' + 'eth'
         r.set(currency_pair_name, timestamp_now)
