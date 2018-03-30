@@ -4,8 +4,8 @@ import os
 from multiprocessing import Pool
 import json
 import redis
-import time
-from tools import generate_path_info
+import tools.logger
+
 
 def string_to_float_list(string_list):
     for i in range(20):
@@ -17,6 +17,8 @@ def calc_fork(currency_path_platform):
     # pool = redis.ConnectionPool(host='127.0.0.1', port=6379,
     #                             decode_responses=True)  # host是redis主机，需要redis服务端和客户端都起着 redis默认端口是6379
     # r = redis.Redis(connection_pool=pool)
+    ppid = os.getpid()
+    logger = tools.logger.Logger(str(ppid) + 'pplog', str(ppid) + '.log')
     r=redis.Redis(host='127.0.0.1', port=6380)
     #print("计算货币:"+currency_path_platform[0])
     #获取路径
@@ -35,17 +37,19 @@ def calc_fork(currency_path_platform):
         currency_info_dict = json.loads(currency_info_str)
         currency_a=currency_info_dict['symbol']
         currency_a=currency_a[:-3]
-        result = calc_profit(r,currency_a,currency_path_platform[0],currency_path_platform[1],currency_path_platform[2])
+        result = calc_profit(r,currency_a,currency_path_platform[0],currency_path_platform[1],currency_path_platform[2],logger)
 
 
-def calc_profit(r, currency_a,currency_b, path_list,platform):
+def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
     #currency_name = mtn
     #os.pid
     pid =str(os.getpid())
     if currency_a == currency_b:
         return 0,0,0,0
     #检查货币信息
+    log_info_list=[]
     #print('pid: ' +pid+ '++'+currency_a+'----------'+currency_b)
+    log_info_list.append('pid: ' +pid+ '++'+currency_a+'----------'+currency_b)
     if r.get(currency_b  + '-'+ 'btc') == '':
         return
     if r.get(currency_b + '-' + 'eth') == '':
@@ -86,17 +90,18 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
     currency_x_a_info_list = r.mget(currency_x_a_list)
     currency_x_a_info_list=string_to_float_list(currency_x_a_info_list)
 
-    # str_print=""
-    # ii = 1;
-    # for elem in currency_x_a_info_list:
-    #     str_print = str_print + '^' + str(elem)
-    #     if ii == 10:
-    #         str_print = str_print + "*********"
-    #     ii = ii+1
-    # ii = 1;
-    # print('pid: ' + pid + '--' + currency_a + '-eth-'+str_print)
-    #
-    # str_print = ""
+    str_print=""
+    ii = 1;
+    for elem in currency_x_a_info_list:
+        str_print = str_print + '^' + str(elem)
+        if ii == 10:
+            str_print = str_print + "*********"
+        ii = ii+1
+    ii = 1;
+    log_info_list.append('pid: ' + pid + '--' + currency_a + '-eth-'+str_print)
+    #print('pid: ' + pid + '--' + currency_a + '-eth-'+str_print)
+
+    str_print = ""
 
     # mtn的价格 x b
     key_pre = currency_b + '-' + 'eth'
@@ -118,16 +123,17 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
     currency_x_b_info_list = r.mget(currency_x_b_list)
     currency_x_b_info_list = string_to_float_list(currency_x_b_info_list)
 
-    # str_print = ""
-    # for elem in currency_x_b_info_list:
-    #     str_print = str_print + '^' + str(elem)
-    #     if ii == 10:
-    #         str_print = str_print + "*********"
-    #     ii = ii + 1
-    # ii = 1;
-    # print('pid: ' + pid + '--' + currency_b + '-eth-' + str_print)
-    #
-    # str_print = ""
+    str_print = ""
+    for elem in currency_x_b_info_list:
+        str_print = str_print + '^' + str(elem)
+        if ii == 10:
+            str_print = str_print + "*********"
+        ii = ii + 1
+    ii = 1;
+    log_info_list.append('pid: ' + pid + '--' + currency_b + '-eth-' + str_print)
+    #print('pid: ' + pid + '--' + currency_b + '-eth-' + str_print)
+
+    str_print = ""
     # 前20是mtn价格和数量 后20是hrs价格和数量
 
     #btc对应信息
@@ -151,16 +157,17 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
     currency_y_a_info_list = r.mget(currency_y_a_list)
     currency_y_a_info_list = string_to_float_list(currency_y_a_info_list)
 
-    # str_print = ""
-    # for elem in currency_y_a_info_list:
-    #     str_print = str_print + '^' + str(elem)
-    #     if ii == 10:
-    #         str_print = str_print + "*********"
-    #     ii = ii + 1
-    # ii = 1;
-    # print('pid: ' + pid + '--' + currency_a + '-btc-' + str_print)
-    #
-    # str_print = ""
+    str_print = ""
+    for elem in currency_y_a_info_list:
+        str_print = str_print + '^' + str(elem)
+        if ii == 10:
+            str_print = str_print + "*********"
+        ii = ii + 1
+    ii = 1;
+    log_info_list.append('pid: ' + pid + '--' + currency_a + '-btc-' + str_print)
+    #print('pid: ' + pid + '--' + currency_a + '-btc-' + str_print)
+
+    str_print = ""
 
     # mtn的价格 y b
     key_pre = currency_b + '-' + 'btc'
@@ -183,13 +190,14 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
     currency_y_b_info_list = string_to_float_list(currency_y_b_info_list)
 
 
-    # for elem in currency_y_b_info_list:
-    #     str_print = str_print + '^' + str(elem)
-    #     if ii == 10:
-    #         str_print = str_print + "*********"
-    #     ii = ii + 1
-    # ii = 1;
-    # print('pid: ' + pid + '--' + currency_b + '-btc-' + str_print)
+    for elem in currency_y_b_info_list:
+        str_print = str_print + '^' + str(elem)
+        if ii == 10:
+            str_print = str_print + "*********"
+        ii = ii + 1
+    ii = 1;
+    log_info_list.append('pid: ' + pid + '--' + currency_b + '-btc-' + str_print)
+    #print('pid: ' + pid + '--' + currency_b + '-btc-' + str_print)
 
 
 
@@ -526,7 +534,6 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
             else:
                 x_part_0_a_count_begin = x_part_0_a_count_begin + x_part_0_a_count_for_calc
 
-                a1_num_record = a1_num_record + x_part_0_a_count_for_calc
                 a1_price_record = x_a_asks_price[ai]
 
                 x_begin = x_begin + x_part_0_a_count_for_calc * x_a_asks_price[ai]
@@ -594,7 +601,16 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
         # print('pid: ' + pid + '--', x_begin * 1.05, x_end * 0.998 * 0.998 * 0.998 * 0.998,
         #        x_begin * 1.005 < x_end * 0.998 * 0.998 * 0.998 * 0.998, a_num_list, a_price_list)
         #print(path)
+        log_info_list.append('pid: ' + str(pid) + '--'+ str(x_begin * 1.05)+str(x_end * 0.998 * 0.998 * 0.998 * 0.998)+
+                             str(x_begin * 1.005 < x_end * 0.998 * 0.998 * 0.998 * 0.998)+
+                             a1_done+','+a2_done+','+a3_done+','+a4_done+','
+                             +p1_done+','+p2_done+','+p3_done+','+p4_done
+                             )
 
+        log_switch = r.get('log_switch')
+        if(log_switch.decode() == 'TURE'):
+            for log in log_info_list:
+                logger.info(log)
 
         if x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin < 1.005:
             break
@@ -603,9 +619,10 @@ def calc_profit(r, currency_a,currency_b, path_list,platform):
             continue
         # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998 and x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin > 1.005:
         #     # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998:
-        print('pid: ' + pid + '--', x_begin , x_end * 0.998 * 0.998 * 0.998 * 0.998,
-              x_begin * 1.005 < x_end * 0.998 * 0.998 * 0.998 * 0.998, a_num_list, a_price_list)
-        print(path)
+        # print('pid: ' + pid + '--', x_begin , x_end * 0.998 * 0.998 * 0.998 * 0.998,
+        #       x_begin * 1.005 < x_end * 0.998 * 0.998 * 0.998 * 0.998, a_num_list, a_price_list)
+        # print(path)
+        logger.info(log)
         result_list_redis(r, currency_a, currency_b, a_num_list, a_price_list,platform)
 
     return 0
