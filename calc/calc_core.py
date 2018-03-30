@@ -619,10 +619,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
         if x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin < 1.005:
             break
 
-        for log in log_info_list:
-            logger.info(log)
-
-        if float(a1_done) *  float(a2_done) * float(a3_done)* float(a4_done) == float('0'):
+        if   float(a2_done) * float(a4_done) == float('0'):
             continue
         # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998 and x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin > 1.005:
         #     # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998:
