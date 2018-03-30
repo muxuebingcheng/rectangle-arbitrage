@@ -626,7 +626,8 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
         # print('pid: ' + pid + '--', x_begin , x_end * 0.998 * 0.998 * 0.998 * 0.998,
         #       x_begin * 1.005 < x_end * 0.998 * 0.998 * 0.998 * 0.998, a_num_list, a_price_list)
         # print(path)
-        logger.info(log)
+        for log in log_info_list:
+            logger.info(log)
         result_list_redis(r, currency_a, currency_b, a_num_list, a_price_list,platform)
 
     return 0
