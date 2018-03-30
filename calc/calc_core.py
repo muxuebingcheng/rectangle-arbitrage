@@ -611,9 +611,10 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
                              )
 
         log_switch = r.get('log_switch')
-        if(log_switch.decode() == currency_b):
-            for log in log_info_list:
-                logger.info(log)
+        if log_switch != None:
+            if(log_switch.decode() == currency_b):
+                for log in log_info_list:
+                    logger.info(log)
 
         if x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin < 1.005:
             break
