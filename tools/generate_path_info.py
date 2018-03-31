@@ -135,9 +135,9 @@ def gen_path_info(source_data):
 
 if __name__ == "__main__":
     paths = get_paths_from_local_data("/home/andong/rectangle-arbitrage/data/paths_ordered.dat")
-    print("length of paths")
-    print(len(paths))
-    print("first data is:")
-    print(paths[0])
-    print("last data is:")
-    print(paths[len(paths)-1])
+    # print("length of paths")
+    # print(len(paths))
+    # print("first data is:")
+    # print(paths[0])
+    # print("last data is:")
+    # print(paths[len(paths)-1])

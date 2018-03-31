@@ -24,7 +24,7 @@ def gen_currency_pair_info(currency_pair_info_str,currency_pair_info,currency_li
     if 'symbol' in currency_pair_info.keys():
         a=1
     else:
-        print("数据未到齐")
+        #print("数据未到齐")
         return
     currency_pair_name = format_name(currency_pair_info['symbol'])
     # 装载redis数据
