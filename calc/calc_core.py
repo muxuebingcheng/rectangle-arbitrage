@@ -5,6 +5,7 @@ from multiprocessing import Pool
 import json
 import redis
 import tools.logger
+import traceback
 
 
 def string_to_float_list(string_list):
@@ -13,16 +14,16 @@ def string_to_float_list(string_list):
     return string_list
 
 #def calc_fork(currency_b,path_list):
-def calc_fork(currency_path_platform):
+def calc_fork(currency_path_platform_redis_ip_redis_port):
     # pool = redis.ConnectionPool(host='127.0.0.1', port=6379,
     #                             decode_responses=True)  # host是redis主机，需要redis服务端和客户端都起着 redis默认端口是6379
     # r = redis.Redis(connection_pool=pool)
     ppid = os.getpid()
-    logger = tools.logger.Logger(str(ppid) + 'pplog', currency_path_platform[0]+str(ppid) + '.log')
-    r=redis.Redis(host='127.0.0.1', port=6380)
+    logger = tools.logger.Logger(str(ppid) + 'pplog', currency_path_platform_redis_ip_redis_port[0]+str(ppid) + '.log')
+    r=redis.Redis(host=currency_path_platform_redis_ip_redis_port[3], port=currency_path_platform_redis_ip_redis_port[4])
     #print("计算货币:"+currency_path_platform[0])
     #获取路径
-    redis_list_key = 'list_'+currency_path_platform[0]
+    redis_list_key = 'list_'+currency_path_platform_redis_ip_redis_port[0]
     # path_info = generate_path_info.get_paths_from_local_data('/Users/yangxi/projectpython/rectangle-arbitrage/data/paths_ordered.dat')
     # path_info = [[0, 1], [0, 1], [0, 1], [0, 1]]
     # print(path_info)
@@ -38,9 +39,11 @@ def calc_fork(currency_path_platform):
         currency_a=currency_info_dict['symbol']
         currency_a=currency_a[:-3]
         try:
-            calc_profit(r,currency_a,currency_path_platform[0],currency_path_platform[1],currency_path_platform[2],logger)
+            calc_profit(r,currency_a,currency_path_platform_redis_ip_redis_port[0],currency_path_platform_redis_ip_redis_port[1],currency_path_platform_redis_ip_redis_port[2],logger)
         except Exception as e:
             logger.info(str(e))
+            msg = traceback.format_exc()
+            logger.info(msg)
 
 
 def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
@@ -52,7 +55,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
     #检查货币信息
     log_info_list=[]
     #print('pid: ' +pid+ '++'+currency_a+'----------'+currency_b)
-    log_info_list.append('pid: ' +pid+ '++'+currency_a+'----------'+currency_b)
+    log_info_list.append('pid: ' +pid+ ' : '+currency_a+'-------------------------------------------'+currency_b)
     if r.get(currency_b  + '-'+ 'btc') == '':
         return
     if r.get(currency_b + '-' + 'eth') == '':
@@ -475,14 +478,14 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
                 x_part_2_y_count_begin = x_part_2_y_count_begin + y_b_asks_num[ai] * y_b_asks_price[ai]
                 x_part_2_b_count_for_calc = x_part_2_b_count_for_calc - y_b_asks_num[ai]
 
-                a3_num_record = a3_num_record + y_b_asks_num[ai] * y_b_asks_price[ai]
+                a3_num_record = a3_num_record + y_b_asks_num[ai]
                 a3_price_record = y_b_asks_price[ai]
             else:
                 x_part_2_y_count_begin = x_part_2_y_count_begin + x_part_2_b_count_for_calc * y_b_asks_price[ai]
 
                 # amount  和 price 分别是什么数量和价格—-btc数量 hsrbtc的最高卖价
                 a3_price_record = y_b_asks_price[ai]
-                a3_num_record = a3_num_record + x_part_2_b_count_for_calc*y_b_asks_price[ai]
+                a3_num_record = a3_num_record + x_part_2_b_count_for_calc
                 break
 
 
@@ -532,7 +535,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
                 a1_price_record = x_a_asks_price[ai]
 
                 x_begin = x_begin + x_a_asks_num[ai] * x_a_asks_price[ai]
-                a1_num_record = x_begin
+                a1_num_record = a1_num_record + x_a_asks_num[ai]
 
             else:
                 x_part_0_a_count_begin = x_part_0_a_count_begin + x_part_0_a_count_for_calc
@@ -540,7 +543,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
                 a1_price_record = x_a_asks_price[ai]
 
                 x_begin = x_begin + x_part_0_a_count_for_calc * x_a_asks_price[ai]
-                a1_num_record = x_begin
+                a1_num_record = a1_num_record + x_part_0_a_count_for_calc
                 break
 
         # a_num_list = [a1_num_record, a2_num_record, a3_num_record, a4_num_record]
@@ -576,6 +579,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
         # print(y_a_price)
         # print(y_b_price)
         # print(x_b_price)
+        log_info_list.append('未求精度的数量'+str(a1_num_record)+' '+str(a2_num_record)+' '+str(a3_num_record)+' '+str(a4_num_record))
 
         amount_1 = '%.' + x_a_amount + 'f'
         amount_2 = '%.' + y_a_amount + 'f'
@@ -597,7 +601,7 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
         p3_done = (price_3 % float(a3_price_record))
         p4_done = (price_4 % float(a4_price_record))
 
-        a_num_list = [x_begin, a2_done, a3_num_record, a4_done]
+        a_num_list = [a1_done, a2_done, a3_done, a4_done]
         a_price_list = [p1_done, p2_done, p3_done, p4_done]
 
         # print('------------------------------------------------------')
@@ -620,6 +624,8 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
             break
 
         if   float(a2_done) * float(a4_done) == float('0'):
+            for log in log_info_list:
+                logger.info(log)
             continue
         # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998 and x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin > 1.005:
         #     # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998:
