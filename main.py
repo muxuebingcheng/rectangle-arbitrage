@@ -31,7 +31,12 @@ def fill_precision_info(precision_info_dict,r):
         r.set(key,price_pre)
 
 
-def main_process(r,key,platform,currency_list,is_send_message,logger):
+def main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,redis_port):
+    #redis-cli -h 127.0.0.1 -p 6380 keys "*" | xargs redis-cli -h 127.0.0.1 -p 6380 del
+    command = ' redis-cli -h '+ str(redis_ip) + ' -p ' + str(redis_port) + ' keys "*" | xargs redis-cli -h ' + str(redis_ip) + ' -p ' + str(redis_port) + ' del '
+    logger.info(command)
+    os.system(command)
+
     ws = create_connection("ws://47.104.136.5:8201")
     if ws.connected:
         # 链接成功 发送验证信息
@@ -158,7 +163,7 @@ def main(conf_file_name):
 
     while 1:
         try:
-            main_process(r,key,platform,currency_list,is_send_message,logger)
+            main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,redis_port)
         except Exception as e:
             logger.info(e)
             msg = traceback.format_exc()
