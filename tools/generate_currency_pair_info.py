@@ -21,6 +21,13 @@ def gen_currency_pair_info(currency_pair_info_str,currency_pair_info,currency_li
     # key:hsr-eth value:[timestamp]
     # key:hsr-btc value:[timestamp]
     # redis list结构 攒齐一对 向后方每个redis list(每个redis list 对应一个处理进程)
+
+    # #判断消息类型 若是重算消息 放入重算队列
+    # if 'action' in currency_pair_info.keys():
+    #     action = currency_pair_info['action']
+    #     if action == 'PutFourPointArbitrage':
+    #         r.lpush("list_recalc",currency_pair_info_str)
+
     if 'symbol' in currency_pair_info.keys():
         a=1
     else:

@@ -161,6 +161,11 @@ def main(conf_file_name):
     p.close()
     logger.info('All subprocesses done.')
 
+    # #recalc process pool
+    # p_recalc = Pool(4)
+    # for i in range(4):
+    #     p.apply_async(calc_core.recalc, args=((redis_ip,redis_port),))
+
     while 1:
         try:
             main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,redis_port)
