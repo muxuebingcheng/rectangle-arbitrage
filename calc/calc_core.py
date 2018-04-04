@@ -655,21 +655,16 @@ def result_list_redis(r,currency_a,currency_b,a_num_list,a_price_record,platform
     result_path_dict_list=[]
 
     #{"from": "iost", "to": "eth", "type": "buy", "market": "false", "amount": "1", "price": "1"}
-    path_begin = {'from': currency_a, 'to': 'eth', 'type': 'buy', 'market': 'false', 'amount': '0', 'price': '0','xbegin': x_begin}
 
-    path_middle = {'from': currency_a, 'to': 'eth', 'type': 'buy', 'market': 'false', 'amount': '0', 'price': '0','ymiddle': y_middle}
-
-    path_end = {'from': currency_a, 'to': 'eth', 'type': 'buy', 'market': 'false', 'amount': '0', 'price': '0','xend': x_end}
-
-    path1 = {'from': currency_a, 'to': 'eth', 'type': 'buy', 'market': 'false', 'amount': a_num_list[0],'price': a_price_record[0]}
+    path1 = {'from': currency_a, 'to': 'eth', 'type': 'buy', 'market': 'false', 'amount': a_num_list[0],'price': a_price_record[0],'xbegin':x_begin}
 
     path2 = {'from': currency_a, 'to': 'btc', 'type': 'sell', 'market': 'false', 'amount': a_num_list[1],'price': a_price_record[1]}
 
-    path3 = {'from': currency_b, 'to': 'btc', 'type': 'buy', 'market': 'false', 'amount': a_num_list[2],'price': a_price_record[2]}
+    path3 = {'from': currency_b, 'to': 'btc', 'type': 'buy', 'market': 'false', 'amount': a_num_list[2],'price': a_price_record[2],'ymiddle':y_middle}
 
-    path4 = {'from': currency_b, 'to': 'eth', 'type': 'sell', 'market': 'false', 'amount': a_num_list[3],'price': a_price_record[3]}
+    path4 = {'from': currency_b, 'to': 'eth', 'type': 'sell', 'market': 'false', 'amount': a_num_list[3],'price': a_price_record[3],'xend':x_end}
 
-    result_path_dict_list = [path_begin, path_middle, path_end, path1, path2, path3, path4]
+    result_path_dict_list = [path1, path2, path3, path4]
     result_dict['platform']=platform
     result_dict['action']='PutFourPointArbitrage'
     result_dict['path']=result_path_dict_list
