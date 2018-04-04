@@ -597,9 +597,14 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
         price_4 = '%.' + x_b_price + 'f'
 
         a1_done = (amount_1 % float(a1_num_record))
+
+        a2_num_record = float(a1_done)*0.998
         a2_done = (amount_2 % float(a2_num_record))
-        a3_done = (amount_3 % float(a3_num_record))
+
         a4_done = (amount_4 % float(a4_num_record))
+
+        a3_num_record = float(a4_done)/0.998
+        a3_done = (amount_3 % float(a3_num_record))
 
         p1_done = (price_1 % float(a1_price_record))
         p2_done = (price_2 % float(a2_price_record))
