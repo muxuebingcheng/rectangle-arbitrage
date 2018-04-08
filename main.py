@@ -62,10 +62,12 @@ def main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,re
         begin_timestamp = int(time.time())
         for currency in currency_list:
             send_message_btc = '{"action":"SubMarketDepth","symbol":"' + currency + 'btc","platform":"' + platform + '"}'
+            print(send_message_btc)
             ws.send(send_message_btc)
             data_info = ws.recv()
             logger.info(data_info)
             send_message_eth = '{"action":"SubMarketDepth","symbol":"' + currency + 'eth","platform":"' + platform + '"}'
+            print(send_message_eth)
             ws.send(send_message_eth)
             data_info = ws.recv()
             logger.info(data_info)
