@@ -138,6 +138,7 @@ def main(conf_file_name):
     key=conf.get('conf', 'key')
     is_send_message=conf.get('conf', 'is_send_message')
     currency_list = json.loads(conf.get('conf', 'currency_list'))
+    recalc_num = conf.get('conf','recalc_num')
 
     pool = redis.ConnectionPool(host=redis_ip, port=redis_port,
                                 decode_responses=True)  # host是redis主机，需要redis服务端和客户端都起着 redis默认端口是6379
@@ -161,10 +162,10 @@ def main(conf_file_name):
     p.close()
     logger.info('All subprocesses done.')
 
-    # #recalc process pool
-    # p_recalc = Pool(4)
-    # for i in range(4):
-    #     p.apply_async(calc_core.recalc, args=((redis_ip,redis_port),))
+    #recalc process pool
+    p_recalc = Pool(int(recalc_num))
+    for i in range(int(recalc_num)):
+        p.apply_async(calc_core.recalc, args=((redis_ip,redis_port,platform),))
 
     while 1:
         try:
