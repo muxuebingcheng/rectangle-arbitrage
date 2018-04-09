@@ -682,17 +682,6 @@ def result_list_redis(r,currency_a,currency_b,a_num_list,a_price_record,platform
 
 
 def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform):
-    if int(step) == 2:
-        x_begin = recalc_info_json['path'][0]['xbegin']
-        a_begin = recalc_info_json['path'][0]['amount']
-        a1_num_record = recalc_info_json['path'][0]['amount']
-        a1_price_record = recalc_info_json['path'][0]['price']
-
-    elif int(step) == 3:
-        x_begin = recalc_info_json['path'][0]['xbegin']
-        y_middle = recalc_info_json['path'][2]['ymiddle']
-        a1_num_record = recalc_info_json['path'][0]['amount']
-        a1_price_record = recalc_info_json['path'][0]['price']
 
     #currency_name = mtn
     #os.pid
@@ -840,106 +829,106 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
     x_a_bids_price = [0] * 5
     x_a_bids_num = [0] * 5
     x_a_bids_price[0] = currency_x_a_info_list[10] #price
-    x_a_bids_num[0] = 0.1*currency_x_a_info_list[11]   #num
+    x_a_bids_num[0] = 0.01*currency_x_a_info_list[11]   #num
     x_a_bids_price[1] = currency_x_a_info_list[12]
-    x_a_bids_num[1] = 0.2*currency_x_a_info_list[13]
+    x_a_bids_num[1] = 0.02*currency_x_a_info_list[13]
     x_a_bids_price[2] = currency_x_a_info_list[14]
-    x_a_bids_num[2] = 0.3*currency_x_a_info_list[15]
+    x_a_bids_num[2] = 0.03*currency_x_a_info_list[15]
     x_a_bids_price[3] = currency_x_a_info_list[16]
-    x_a_bids_num[3] = 0.4*currency_x_a_info_list[17]
+    x_a_bids_num[3] = 0.04*currency_x_a_info_list[17]
     x_a_bids_price[4] = currency_x_a_info_list[18]
-    x_a_bids_num[4] = 0.5*currency_x_a_info_list[19]
+    x_a_bids_num[4] = 0.05*currency_x_a_info_list[19]
 
     y_a_asks_price = [0] * 5
     y_a_asks_num = [0] * 5
     y_a_asks_price[0] = currency_y_a_info_list[0] #price
-    y_a_asks_num[0] = 0.1*currency_y_a_info_list[1]   #num
+    y_a_asks_num[0] = 0.01*currency_y_a_info_list[1]   #num
     y_a_asks_price[1] = currency_y_a_info_list[2]
-    y_a_asks_num[1] = 0.2*currency_y_a_info_list[3]
+    y_a_asks_num[1] = 0.02*currency_y_a_info_list[3]
     y_a_asks_price[2] = currency_y_a_info_list[4]
-    y_a_asks_num[2] = 0.3*currency_y_a_info_list[5]
+    y_a_asks_num[2] = 0.03*currency_y_a_info_list[5]
     y_a_asks_price[3] = currency_y_a_info_list[6]
-    y_a_asks_num[3] = 0.4*currency_y_a_info_list[7]
+    y_a_asks_num[3] = 0.04*currency_y_a_info_list[7]
     y_a_asks_price[4] = currency_y_a_info_list[8]
-    y_a_asks_num[4] = 0.5*currency_y_a_info_list[9]
+    y_a_asks_num[4] = 0.05*currency_y_a_info_list[9]
 
     y_a_bids_price = [0] * 5
     y_a_bids_num = [0] * 5
     y_a_bids_price[0] = currency_y_a_info_list[10] #price
-    y_a_bids_num[0] = 0.1*currency_y_a_info_list[11]   #num
+    y_a_bids_num[0] = 0.01*currency_y_a_info_list[11]   #num
     y_a_bids_price[1] = currency_y_a_info_list[12]
-    y_a_bids_num[1] = 0.2*currency_y_a_info_list[13]
+    y_a_bids_num[1] = 0.02*currency_y_a_info_list[13]
     y_a_bids_price[2] = currency_y_a_info_list[14]
-    y_a_bids_num[2] = 0.3*currency_y_a_info_list[15]
+    y_a_bids_num[2] = 0.03*currency_y_a_info_list[15]
     y_a_bids_price[3] = currency_y_a_info_list[16]
-    y_a_bids_num[3] = 0.4*currency_y_a_info_list[17]
+    y_a_bids_num[3] = 0.04*currency_y_a_info_list[17]
     y_a_bids_price[4] = currency_y_a_info_list[18]
-    y_a_bids_num[4] = 0.5*currency_y_a_info_list[19]
+    y_a_bids_num[4] = 0.05*currency_y_a_info_list[19]
 
     x_a_asks_price = [0] * 5
     x_a_asks_num = [0] * 5
     x_a_asks_price[0] = currency_x_a_info_list[0]
-    x_a_asks_num[0] = 0.1*currency_x_a_info_list[1]
+    x_a_asks_num[0] = 0.01*currency_x_a_info_list[1]
     x_a_asks_price[1] = currency_x_a_info_list[2]
-    x_a_asks_num[1] = 0.2*currency_x_a_info_list[3]
+    x_a_asks_num[1] = 0.02*currency_x_a_info_list[3]
     x_a_asks_price[2] = currency_x_a_info_list[4]
-    x_a_asks_num[2] = 0.3*currency_x_a_info_list[5]
+    x_a_asks_num[2] = 0.03*currency_x_a_info_list[5]
     x_a_asks_price[3] = currency_x_a_info_list[6]
-    x_a_asks_num[3] = 0.4*currency_x_a_info_list[7]
+    x_a_asks_num[3] = 0.04*currency_x_a_info_list[7]
     x_a_asks_price[4] = currency_x_a_info_list[8]
-    x_a_asks_num[4] = 0.5*currency_x_a_info_list[9]
+    x_a_asks_num[4] = 0.05*currency_x_a_info_list[9]
 
     x_b_bids_price = [0] * 5
     x_b_bids_num = [0] * 5
     x_b_bids_price[0] = currency_x_b_info_list[10]
-    x_b_bids_num[0] = 0.1*currency_x_b_info_list[11]
+    x_b_bids_num[0] = 0.01*currency_x_b_info_list[11]
     x_b_bids_price[1] = currency_x_b_info_list[12]
-    x_b_bids_num[1] = 0.2*currency_x_b_info_list[13]
+    x_b_bids_num[1] = 0.02*currency_x_b_info_list[13]
     x_b_bids_price[2] = currency_x_b_info_list[14]
-    x_b_bids_num[2] = 0.3*currency_x_b_info_list[15]
+    x_b_bids_num[2] = 0.03*currency_x_b_info_list[15]
     x_b_bids_price[3] = currency_x_b_info_list[16]
-    x_b_bids_num[3] = 0.4*currency_x_b_info_list[17]
+    x_b_bids_num[3] = 0.04*currency_x_b_info_list[17]
     x_b_bids_price[4] = currency_x_b_info_list[18]
-    x_b_bids_num[4] = 0.5*currency_x_b_info_list[19]
+    x_b_bids_num[4] = 0.05*currency_x_b_info_list[19]
 
     y_b_asks_price = [0] * 5
     y_b_asks_num = [0] * 5
     y_b_asks_price[0] = currency_y_b_info_list[0]
-    y_b_asks_num[0] = 0.1*currency_y_b_info_list[1]
+    y_b_asks_num[0] = 0.01*currency_y_b_info_list[1]
     y_b_asks_price[1] = currency_y_b_info_list[2]
-    y_b_asks_num[1] = 0.2*currency_y_b_info_list[3]
+    y_b_asks_num[1] = 0.02*currency_y_b_info_list[3]
     y_b_asks_price[2] = currency_y_b_info_list[4]
-    y_b_asks_num[2] = 0.3*currency_y_b_info_list[5]
+    y_b_asks_num[2] = 0.03*currency_y_b_info_list[5]
     y_b_asks_price[3] = currency_y_b_info_list[6]
-    y_b_asks_num[3] = 0.4*currency_y_b_info_list[7]
+    y_b_asks_num[3] = 0.04*currency_y_b_info_list[7]
     y_b_asks_price[4] = currency_y_b_info_list[8]
-    y_b_asks_num[4] = 0.5*currency_y_b_info_list[9]
+    y_b_asks_num[4] = 0.05*currency_y_b_info_list[9]
 
     y_b_bids_price = [0] * 5
     y_b_bids_num = [0] * 5
     y_b_bids_price[0] = currency_y_b_info_list[10]
-    y_b_bids_num[0] = 0.1*currency_y_b_info_list[11]
+    y_b_bids_num[0] = 0.01*currency_y_b_info_list[11]
     y_b_bids_price[1] = currency_y_b_info_list[12]
-    y_b_bids_num[1] = 0.2*currency_y_b_info_list[13]
+    y_b_bids_num[1] = 0.02*currency_y_b_info_list[13]
     y_b_bids_price[2] = currency_y_b_info_list[14]
-    y_b_bids_num[2] = 0.3*currency_y_b_info_list[15]
+    y_b_bids_num[2] = 0.03*currency_y_b_info_list[15]
     y_b_bids_price[3] = currency_y_b_info_list[16]
-    y_b_bids_num[3] = 0.4*currency_y_b_info_list[17]
+    y_b_bids_num[3] = 0.04*currency_y_b_info_list[17]
     y_b_bids_price[4] = currency_y_b_info_list[18]
-    y_b_bids_num[4] = 0.5*currency_y_b_info_list[19]
+    y_b_bids_num[4] = 0.05*currency_y_b_info_list[19]
 
     x_b_asks_price = [0] * 5
     x_b_asks_num = [0] * 5
     x_b_asks_price[0] = currency_x_b_info_list[0]
-    x_b_asks_num[0] = 0.1*currency_x_b_info_list[1]
+    x_b_asks_num[0] = 0.01*currency_x_b_info_list[1]
     x_b_asks_price[1] = currency_x_b_info_list[2]
-    x_b_asks_num[1] = 0.2*currency_x_b_info_list[3]
+    x_b_asks_num[1] = 0.02*currency_x_b_info_list[3]
     x_b_asks_price[2] = currency_x_b_info_list[4]
-    x_b_asks_num[2] = 0.3*currency_x_b_info_list[5]
+    x_b_asks_num[2] = 0.03*currency_x_b_info_list[5]
     x_b_asks_price[3] = currency_x_b_info_list[6]
-    x_b_asks_num[3] = 0.4*currency_x_b_info_list[7]
+    x_b_asks_num[3] = 0.04*currency_x_b_info_list[7]
     x_b_asks_price[4] = currency_x_b_info_list[8]
-    x_b_asks_num[4] = 0.5*currency_x_b_info_list[9]
+    x_b_asks_num[4] = 0.05*currency_x_b_info_list[9]
 
     a2_num_record = 0
     a2_price_record = 0
@@ -955,32 +944,57 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
 
     y_3_begin_for_calc=0
 
+    uniqid =''
+    status = ()
+
+    if int(step) == 2:
+        x_begin = recalc_info_json['path'][0]['xbegin']
+        a_begin = recalc_info_json['path'][0]['amount']
+        a1_num_record = recalc_info_json['path'][0]['amount']
+        a1_price_record = recalc_info_json['path'][0]['price']
+        uniqid=recalc_info_json['uniqid']
+        status = (2,0,0,0)
+
+    elif int(step) == 3:
+        x_begin = recalc_info_json['path'][0]['xbegin']
+        y_middle = recalc_info_json['path'][2]['ymiddle']
+        a1_num_record = recalc_info_json['path'][0]['amount']
+        a1_price_record = recalc_info_json['path'][0]['price']
+        a2_num_record = recalc_info_json['path'][1]['amount']
+        a2_price_record = recalc_info_json['path'][1]['price']
+        uniqid = recalc_info_json['uniqid']
+        status = (2, 2, 0, 0)
+
     #正推计算
     # 计算part2的y起
     if step == 2 :
-        a_2_begin_for_calc = a_begin * 0.998
+        a_2_begin_for_calc = float(a_begin) * 0.998
         a2_num_record = a_2_begin_for_calc
         y_2_sum = 0
         for ai in range(4):
-            if a_2_begin_for_calc - x_a_bids_num[ai] > 0:
-                y_2_sum = y_2_sum = x_a_bids_price[ai] * x_a_bids_num[ai]
-                a_2_begin_for_calc = a_2_begin_for_calc - x_a_bids_num[ai]
-                a2_price_record = x_a_bids_price[ai]
+            if a_2_begin_for_calc - y_a_bids_num[ai] > 0:
+                y_2_sum = y_2_sum = y_a_bids_price[ai] * y_a_bids_num[ai]
+                a_2_begin_for_calc = a_2_begin_for_calc - y_a_bids_num[ai]
+                a2_price_record = y_a_bids_price[ai]
             else:
-                y_2_sum = a_2_begin_for_calc * x_a_bids_num[ai]
+                y_2_sum = a_2_begin_for_calc * y_a_bids_price[ai]
                 a_2_begin_for_calc = 0
                 a2_price_record = x_a_bids_price[ai]
+                break
 
         if a_2_begin_for_calc != 0:
             return
 
+
         y_3_begin = y_2_sum * 0.998
+        y_middle = y_3_begin
         y_3_begin_for_calc = y_3_begin
 
     b_3_sum = 0
     if step == 3:
         # 计算part3的b_begin
-        y_3_begin_for_calc = y_middle * 0.998
+
+        y_3_begin_for_calc = float(y_middle) * 0.998
 
     for ai in range(4):
         if y_3_begin_for_calc - y_b_asks_num[ai] * y_b_asks_price[ai] > 0:
@@ -991,6 +1005,7 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
             b_3_sum = b_3_sum + y_3_begin_for_calc / y_b_asks_price[ai]
             y_3_begin_for_calc = 0
             a3_price_record = y_b_asks_price[ai]
+            break
 
     if y_3_begin_for_calc != 0:
         return
@@ -1006,10 +1021,13 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
             a_4_sum = a_4_sum + x_b_bids_num[ai]
             b_4_begin_for_calc = b_4_begin_for_calc - x_b_bids_num[ai]
             x_end = x_end + x_b_bids_num[ai] * x_b_bids_price[ai]
+            a4_price_record = x_b_bids_price[ai]
         else:
             a_4_sum = a_4_sum + b_4_begin_for_calc
             x_end = x_end + b_4_begin_for_calc * x_b_bids_price[ai]
             b_4_begin_for_calc = 0
+            a4_price_record = x_b_bids_price[ai]
+            break
 
     x_a_amount = r.get(currency_a + '-' + 'eth' + '-amount')
     x_a_amount = x_a_amount.decode()
@@ -1065,19 +1083,20 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
     # print('pid: ' + pid + '--', x_begin * 1.05, x_end * 0.998 * 0.998 * 0.998 * 0.998,
     #        x_begin * 1.005 < x_end * 0.998 * 0.998 * 0.998 * 0.998, a_num_list, a_price_list)
     # print(path)
-    log_info_list.append('pid: ' + str(pid) + '--' + str(x_begin * 1.05) + str(x_end) +
-                         str(x_begin * 1.005 < x_end) +
+    flag = float(x_begin) * 1.005 < x_end
+    log_info_list.append('pid: ' + str(pid) + '--' + str(float(x_begin) * 1.05) +'---'+str(x_end) +'---'+
+                         str(float(x_begin) * 1.005 < x_end) +
                          a1_done + ',' + a2_done + ',' + a3_done + ',' + a4_done + ','
                          + p1_done + ',' + p2_done + ',' + p3_done + ',' + p4_done
                          )
 
-    log_switch = r.get('log_switch')
+    log_switch = r.get('log_recalc')
     if log_switch != None:
         if (log_switch.decode() == currency_b):
             for log in log_info_list:
                 logger.info(log)
 
-    if x_end / x_begin < 1.005:
+    if x_end / float(x_begin) < 1.005:
         return 0
 
     if float(a2_done) * float(a4_done) == float('0'):
@@ -1092,17 +1111,18 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
     for log in log_info_list:
         logger.info(log)
     # 放redis-list
-    result_list_redis(r, currency_a, currency_b, a_num_list, a_price_list, platform)
+    result_list_redis_recalc(r, currency_a, currency_b, a_num_list, a_price_list, platform, x_begin, y_middle,x_end,uniqid,status)
 
     return 0
 
 
 
 def recalc(redisip_redisport_platform):
+    print(1)
     r = redis.Redis(host=redisip_redisport_platform[0],
                     port=redisip_redisport_platform[1])
     ppid = os.getpid()
-    logger = tools.logger.Logger(str(ppid) + 'recalc', + str(ppid) + 'recalc.log')
+    logger = tools.logger.Logger(str(ppid) + 'recalc', str(ppid) + 'recalc.log')
     platform = redisip_redisport_platform[2]
     while True:
         recalc_info_byte = r.lpop("list_recalc")
@@ -1124,36 +1144,42 @@ def recalc(redisip_redisport_platform):
             y_middle = recalc_info_json['path'][2]['ymiddle']
         else:
             continue
-
-
-        #time_begin = int(time.time())
         while True:
-            recalc_profit(r,currency_a,currency_b,step,logger,recalc_info_json,platform)
-
-            #卡在第二部分 a数量已知
-            # {"action": "PutFourPointArbitrage", "path": [
-            #     {"from": "eth", "market": "false", "type": "buy", "to": "mtn", "amount": "38.03", "price": "0.00021402",
-            #      "xbegin": "eth起数量"},
-
-            #     {"from": "mtn", "market": "false", "type": "sell", "to": "btc", "amount": "38.03",
-            #      "price": "0.00001326", "status": "3"},
-
-            #     {"from": "btc", "market": "false", "type": "buy", "to": "hsr", "amount": "0.6382",
-            #      "price": "0.00079000", "ymiddle": "btc数量"},
-
-            #     {"from": "hsr", "market": "false", "type": "sell", "to": "eth", "amount": "0.6382", "price": "0.013046",
-            #      "xend": "eth终数量"}
-            # ], "platform": "huobi"}
-            #status 从第一步到最后一步 是 2 3 0 0 (成功 取消 未执行 未执行)
-            # 0未执行 1已下单 2下单完成 3取消订单 4其他
-
-
-
-            #卡在第三部分 y数量已知
-
-            # time_end=int(time.time())
-            # if(time_end - time_begin > 600):
-            #     break;
-
+            try:
+                recalc_profit(r,currency_a,currency_b,step,logger,recalc_info_json,platform)
+            except Exception as e:
+                logger.info(str(e))
+                msg = traceback.format_exc()
+                logger.info(msg)
 
     return
+
+def result_list_redis_recalc(r,currency_a,currency_b,a_num_list,a_price_record,platform,x_begin,y_middle,x_end,uniqid,status):
+    # {"path": [{"from": "iost", "to": "eth", "type": "buy", "market": "false", "amount": "1", "price": "1"},
+    #           {"from": "iost", "to": "btc", "type": "sell", "market": "false", "amount": "1", "price": "1"},
+    #           {"from": "ht", "to": "btc", "type": "buy", "market": "false", "amount": "1", "price": "1"},
+    #           {"from": "ht", "to": "eth", "type": "sell", "market": "false", "amount": "1", "price": "1"}],
+    #  "platform": "huobi", "action": "PutFourPointArbitrage"}
+
+    result_dict={}
+    result_path_dict_list=[]
+
+    #{"from": "iost", "to": "eth", "type": "buy", "market": "false", "amount": "1", "price": "1"}
+
+    path1 = {'from': currency_a, 'to': 'eth', 'type': 'buy', 'market': 'false', 'amount': a_num_list[0],'price': a_price_record[0],'xbegin':x_begin,'status':status[0]}
+
+    path2 = {'from': currency_a, 'to': 'btc', 'type': 'sell', 'market': 'false', 'amount': a_num_list[1],'price': a_price_record[1],'status':status[1]}
+
+    path3 = {'from': currency_b, 'to': 'btc', 'type': 'buy', 'market': 'false', 'amount': a_num_list[2],'price': a_price_record[2],'ymiddle':y_middle,'status':status[2]}
+
+    path4 = {'from': currency_b, 'to': 'eth', 'type': 'sell', 'market': 'false', 'amount': a_num_list[3],'price': a_price_record[3],'xend':x_end,'status':status[3]}
+
+    result_path_dict_list = [path1, path2, path3, path4]
+    result_dict['platform']=platform
+    result_dict['action']='PutRback'
+    result_dict['uniqid'] = uniqid
+    result_dict['path']=result_path_dict_list
+    result_json =  json.dumps(result_dict)
+    # print("赚钱路径")
+    # print('pid: ' +str(os.getpid())+'-'+currency_a+'-'+currency_b+'--'+result_json)
+    r.lpush("list_result",result_json)

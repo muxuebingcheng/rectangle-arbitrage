@@ -50,7 +50,7 @@ def main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,re
                 opcode=0x1)
         precision_info = ws.recv()
         precision_info_dict = json.loads(precision_info)
-        #logger.info(precision_info_dict)
+        logger.info(precision_info_dict)
         precision_info_dict = precision_info_dict['symbols']
         fill_precision_info(precision_info_dict, r)
     else:
@@ -165,7 +165,7 @@ def main(conf_file_name):
     #recalc process pool
     p_recalc = Pool(int(recalc_num))
     for i in range(int(recalc_num)):
-        p.apply_async(calc_core.recalc, args=((redis_ip,redis_port,platform),))
+        p_recalc.apply_async(calc_core.recalc, args=((redis_ip,redis_port,platform),))
 
     while 1:
         try:
