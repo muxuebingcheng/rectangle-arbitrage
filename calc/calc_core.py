@@ -1118,7 +1118,6 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
 
 
 def recalc(redisip_redisport_platform):
-    print(1)
     r = redis.Redis(host=redisip_redisport_platform[0],
                     port=redisip_redisport_platform[1])
     ppid = os.getpid()
@@ -1126,24 +1125,32 @@ def recalc(redisip_redisport_platform):
     platform = redisip_redisport_platform[2]
     while True:
         recalc_info_byte = r.lpop("list_recalc")
-        recalc_info_str = recalc_info_byte.decode()
-        recalc_info_json = json.loads(recalc_info_str)
-        currency_a = recalc_info_json['path'][0]['from']
-        currency_b = recalc_info_json['path'][3]['from']
-        step_1_status = recalc_info_json['path'][0]['status']
-        step_2_status = recalc_info_json['path'][1]['status']
-        step_3_status = recalc_info_json['path'][2]['status']
-        step_4_status = recalc_info_json['path'][3]['status']
-        step = 0
-        if int(step_2_status) == 3:
-            step = 2
-            x_begin = recalc_info_json['path'][0]['xbegin']
-        elif int(step_3_status) == 3:
-            step = 3
-            x_begin = recalc_info_json['path'][0]['xbegin']
-            y_middle = recalc_info_json['path'][2]['ymiddle']
-        else:
+        if recalc_info_byte == None or recalc_info_byte == '':
+            print(1)
             continue
+        try:
+            recalc_info_str = recalc_info_byte.decode()
+            recalc_info_json = json.loads(recalc_info_str)
+            currency_a = recalc_info_json['path'][0]['from']
+            currency_b = recalc_info_json['path'][3]['from']
+            step_1_status = recalc_info_json['path'][0]['status']
+            step_2_status = recalc_info_json['path'][1]['status']
+            step_3_status = recalc_info_json['path'][2]['status']
+            step_4_status = recalc_info_json['path'][3]['status']
+            step = 0
+            if int(step_2_status) == 3:
+                step = 2
+                x_begin = recalc_info_json['path'][0]['xbegin']
+            elif int(step_3_status) == 3:
+                step = 3
+                x_begin = recalc_info_json['path'][0]['xbegin']
+                y_middle = recalc_info_json['path'][2]['ymiddle']
+            else:
+                continue
+        except Exception as e:
+            logger.info(str(e))
+            msg = traceback.format_exc()
+            logger.info(msg)
         while True:
             try:
                 recalc_profit(r,currency_a,currency_b,step,logger,recalc_info_json,platform)

@@ -46,7 +46,9 @@ def main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,re
         data_info_dict = json.loads(data_info)
         logger.info(data_info_dict)
         # 精度信息
-        ws.send('{"action":"GetSymbols","platform":"' + platform + '"}',
+        precision_request='{"action":"GetSymbols","platform":"' + platform + '"}'
+        logger.info(precision_request)
+        ws.send(precision_request,
                 opcode=0x1)
         precision_info = ws.recv()
         precision_info_dict = json.loads(precision_info)
