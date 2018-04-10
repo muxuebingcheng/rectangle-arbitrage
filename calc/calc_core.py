@@ -1092,7 +1092,7 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
 
     log_switch = r.get('log_recalc')
     if log_switch != None:
-        if (log_switch.decode() == currency_b):
+        if (log_switch.decode() == 'ture'):
             for log in log_info_list:
                 logger.info(log)
 
@@ -1126,7 +1126,6 @@ def recalc(redisip_redisport_platform):
     while True:
         recalc_info_byte = r.lpop("list_recalc")
         if recalc_info_byte == None or recalc_info_byte == '':
-            print(1)
             continue
         try:
             recalc_info_str = recalc_info_byte.decode()
@@ -1147,18 +1146,11 @@ def recalc(redisip_redisport_platform):
                 y_middle = recalc_info_json['path'][2]['ymiddle']
             else:
                 continue
+            recalc_profit(r, currency_a, currency_b, step, logger, recalc_info_json, platform)
         except Exception as e:
             logger.info(str(e))
             msg = traceback.format_exc()
             logger.info(msg)
-        while True:
-            try:
-                recalc_profit(r,currency_a,currency_b,step,logger,recalc_info_json,platform)
-            except Exception as e:
-                logger.info(str(e))
-                msg = traceback.format_exc()
-                logger.info(msg)
-
     return
 
 def result_list_redis_recalc(r,currency_a,currency_b,a_num_list,a_price_record,platform,x_begin,y_middle,x_end,uniqid,status):
