@@ -46,11 +46,13 @@ def main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,re
         data_info_dict = json.loads(data_info)
         logger.info(data_info_dict)
         # 精度信息
-        ws.send('{"action":"GetSymbols","platform":"' + platform + '"}',
+        precision_request='{"action":"GetSymbols","platform":"' + platform + '"}'
+        logger.info(precision_request)
+        ws.send(precision_request,
                 opcode=0x1)
         precision_info = ws.recv()
         precision_info_dict = json.loads(precision_info)
-        #logger.info(precision_info_dict)
+        logger.info(precision_info_dict)
         precision_info_dict = precision_info_dict['symbols']
         fill_precision_info(precision_info_dict, r)
     else:
@@ -140,6 +142,7 @@ def main(conf_file_name):
     key=conf.get('conf', 'key')
     is_send_message=conf.get('conf', 'is_send_message')
     currency_list = json.loads(conf.get('conf', 'currency_list'))
+    recalc_num = conf.get('conf','recalc_num')
 
     pool = redis.ConnectionPool(host=redis_ip, port=redis_port,
                                 decode_responses=True)  # host是redis主机，需要redis服务端和客户端都起着 redis默认端口是6379
@@ -163,10 +166,10 @@ def main(conf_file_name):
     p.close()
     logger.info('All subprocesses done.')
 
-    # #recalc process pool
-    # p_recalc = Pool(4)
-    # for i in range(4):
-    #     p.apply_async(calc_core.recalc, args=((redis_ip,redis_port),))
+    #recalc process pool
+    p_recalc = Pool(int(recalc_num))
+    for i in range(int(recalc_num)):
+        p_recalc.apply_async(calc_core.recalc, args=((redis_ip,redis_port,platform),))
 
     while 1:
         try:
