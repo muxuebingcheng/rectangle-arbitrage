@@ -1199,13 +1199,13 @@ def result_list_redis_recalc(r,currency_a,currency_b,a_num_list,a_price_record,p
     r.lpush("list_result",result_json)
 
 #hsr_eth='{"action":"MarketDepthData","platform":"huobi","symbol":"hsreth","asks":[[0.0007722,12.4201],[0.00077226,14],[0.00077338,82],[0.000774,681.6],[0.000775,117.99]],"bids":[[0.00077052,2.6126],[0.000769,333.9326],[0.00076761,30],[0.00076721,1.3565],[0.000767,415.2]],"timestamp":1523415065}'
-hsr_btc='{"action":"MarketDepthData","platform":"huobi","symbol":"hsrbtc","asks":[[0.0007722,12.4201],[0.00077226,14],[0.00077338,82],[0.000774,681.6],[0.000775,117.99]],"bids":[[0.00077425,36.7906],[0.00076483,19],[0.00076761,30],[0.00076721,1.3565],[0.000767,415.2]],"timestamp":1523415065}'
-path = '/Users/yangxi/projectpython/rectangle-arbitrage/data/paths_result.dat'
-f = open(path, 'r')
-path_list = []
-for line in f.readlines():
-    line = line.strip()
-    a = json.loads(line)
-    path_list.append(a)
-#calc_fork(currency_path_platform_redis_ip_redis_port)
-calc_fork(('mtn',path_list,'huobi','127.0.0.1','6380'))
+# hsr_btc='{"action":"MarketDepthData","platform":"huobi","symbol":"hsrbtc","asks":[[0.0007722,12.4201],[0.00077226,14],[0.00077338,82],[0.000774,681.6],[0.000775,117.99]],"bids":[[0.00077425,36.7906],[0.00076483,19],[0.00076761,30],[0.00076721,1.3565],[0.000767,415.2]],"timestamp":1523415065}'
+# path = '/Users/yangxi/projectpython/rectangle-arbitrage/data/paths_result.dat'
+# f = open(path, 'r')
+# path_list = []
+# for line in f.readlines():
+#     line = line.strip()
+#     a = json.loads(line)
+#     path_list.append(a)
+# #calc_fork(currency_path_platform_redis_ip_redis_port)
+# calc_fork(('mtn',path_list,'huobi','127.0.0.1','6380'))
