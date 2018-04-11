@@ -3,7 +3,7 @@
 
 import unittest
 import time
-
+import traceback
 # currency_pair_info内容
     # data_info {u'symbol': u'hsr-eth',
     # u'bids': [[0.01105, 2.2376], [0.010981, 16.95], [0.010979, 34], [0.010978, 82.2761], [0.010972, 0.0007], [0.010936, 182.473], [0.010922, 86.7123]],
@@ -23,10 +23,17 @@ def gen_currency_pair_info(currency_pair_info_str,currency_pair_info,currency_li
     # redis list结构 攒齐一对 向后方每个redis list(每个redis list 对应一个处理进程)
 
     # #判断消息类型 若是重算消息 放入重算队列
-    if 'action' in currency_pair_info.keys():
-        action = currency_pair_info['action']
-        if action == 'RbackPath':
-            r.lpush("list_recalc",currency_pair_info_str)
+    try:
+        if 'action' in currency_pair_info.keys():
+            print(currency_pair_info_str, 1)
+            action = currency_pair_info['action']
+            if action == 'RbackPath':
+                print(currency_pair_info_str,2)
+                r.lpush("list_recalc", currency_pair_info_str)
+                return
+    except Exception as e:
+        msg = traceback.format_exc()
+        print(msg)
 
     if 'symbol' in currency_pair_info.keys():
         a=1
