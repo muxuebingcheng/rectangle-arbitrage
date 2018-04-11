@@ -255,6 +255,9 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     y_a_bids_price[4] = currency_y_a_info_list[18]
     y_a_bids_num[4] = 0.05*currency_y_a_info_list[19]
 
+    if (y_a_bids_price[0] - y_a_bids_price[1]) / y_a_bids_price[0] > 0.015 or (y_a_bids_price[1] - y_a_bids_price[2]) / y_a_bids_price[1] > 0.015 or (y_a_bids_price[2] - y_a_bids_price[3]) / y_a_bids_price[2] > 0.015 or (y_a_bids_price[3] - y_a_bids_price[4]) / y_a_bids_price[3] > 0.015 :
+        return 0
+
     x_a_asks_price = [0] * 5
     x_a_asks_num = [0] * 5
     x_a_asks_price[0] = currency_x_a_info_list[0]
@@ -267,6 +270,9 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     x_a_asks_num[3] = 0.04*currency_x_a_info_list[7]
     x_a_asks_price[4] = currency_x_a_info_list[8]
     x_a_asks_num[4] = 0.05*currency_x_a_info_list[9]
+
+    if (x_a_asks_price[1] - x_a_asks_price[0]) / x_a_asks_price[0] > 0.015 or (x_a_asks_price[2] - x_a_asks_price[1]) / x_a_asks_price[1] > 0.015 or (x_a_asks_price[3] - x_a_asks_price[2]) / x_a_asks_price[2] > 0.015 or (x_a_asks_price[4] - x_a_asks_price[3]) / x_a_asks_price[3] > 0.015 :
+        return 0
 
     x_b_bids_price = [0] * 5
     x_b_bids_num = [0] * 5
@@ -281,6 +287,9 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     x_b_bids_price[4] = currency_x_b_info_list[18]
     x_b_bids_num[4] = 0.05*currency_x_b_info_list[19]
 
+    if (x_b_bids_price[0] - x_b_bids_price[1]) / x_b_bids_price[0] > 0.015 or (x_b_bids_price[1] - x_b_bids_price[2]) / x_b_bids_price[1] > 0.015 or (x_b_bids_price[2] - x_b_bids_price[3]) / x_b_bids_price[2] > 0.015 or (x_b_bids_price[3] - x_b_bids_price[4]) / x_b_bids_price[3] > 0.015 :
+        return 0
+
     y_b_asks_price = [0] * 5
     y_b_asks_num = [0] * 5
     y_b_asks_price[0] = currency_y_b_info_list[0]
@@ -293,6 +302,9 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     y_b_asks_num[3] = 0.04*currency_y_b_info_list[7]
     y_b_asks_price[4] = currency_y_b_info_list[8]
     y_b_asks_num[4] = 0.05*currency_y_b_info_list[9]
+
+    if (y_b_asks_price[1] - y_b_asks_price[0]) / y_b_asks_price[0] > 0.015 or (y_b_asks_price[2] - y_b_asks_price[1]) / y_b_asks_price[1] > 0.015 or (y_b_asks_price[3] - y_b_asks_price[2]) / y_b_asks_price[2] > 0.015 or (y_b_asks_price[4] - y_b_asks_price[3]) / y_b_asks_price[3] > 0.015 :
+        return 0
 
     y_b_bids_price = [0] * 5
     y_b_bids_num = [0] * 5
@@ -1198,7 +1210,7 @@ def result_list_redis_recalc(r,currency_a,currency_b,a_num_list,a_price_record,p
     # print('pid: ' +str(os.getpid())+'-'+currency_a+'-'+currency_b+'--'+result_json)
     r.lpush("list_result",result_json)
 
-#hsr_eth='{"action":"MarketDepthData","platform":"huobi","symbol":"hsreth","asks":[[0.0007722,12.4201],[0.00077226,14],[0.00077338,82],[0.000774,681.6],[0.000775,117.99]],"bids":[[0.00077052,2.6126],[0.000769,333.9326],[0.00076761,30],[0.00076721,1.3565],[0.000767,415.2]],"timestamp":1523415065}'
+# hsr_eth='{"action":"MarketDepthData","platform":"huobi","symbol":"hsreth","asks":[[0.0007722,12.4201],[0.00077226,14],[0.00077338,82],[0.000774,681.6],[0.000775,117.99]],"bids":[[0.00077052,2.6126],[0.000769,333.9326],[0.00076761,30],[0.00076721,1.3565],[0.000767,415.2]],"timestamp":1523415065}'
 # hsr_btc='{"action":"MarketDepthData","platform":"huobi","symbol":"hsrbtc","asks":[[0.0007722,12.4201],[0.00077226,14],[0.00077338,82],[0.000774,681.6],[0.000775,117.99]],"bids":[[0.00077425,36.7906],[0.00076483,19],[0.00076761,30],[0.00076721,1.3565],[0.000767,415.2]],"timestamp":1523415065}'
 # path = '/Users/yangxi/projectpython/rectangle-arbitrage/data/paths_result.dat'
 # f = open(path, 'r')
