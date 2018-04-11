@@ -28,6 +28,9 @@ def calc_fork(currency_path_platform_redis_ip_redis_port):
     # path_info = generate_path_info.get_paths_from_local_data('/Users/yangxi/projectpython/rectangle-arbitrage/data/paths_ordered.dat')
     # path_info = [[0, 1], [0, 1], [0, 1], [0, 1]]
     # print(path_info)
+    timestamp_last = int(time.time())
+    timestamp_now = int(time.time())
+    last_rtdio = 0
     while 1:
         #print("redis_list_key:"+redis_list_key)
         currency_info_str = r.lpop(redis_list_key)
@@ -39,15 +42,19 @@ def calc_fork(currency_path_platform_redis_ip_redis_port):
         currency_info_dict = json.loads(currency_info_str)
         currency_a=currency_info_dict['symbol']
         currency_a=currency_a[:-3]
+        timestamp_now = int(time.time())
+        if timestamp_now - timestamp_last > 10 :
+            timestamp_last = timestamp_now
+            last_rtdio = 0
         try:
-            calc_profit(r,currency_a,currency_path_platform_redis_ip_redis_port[0],currency_path_platform_redis_ip_redis_port[1],currency_path_platform_redis_ip_redis_port[2],logger)
+            last_rtdio=calc_profit(r,currency_a,currency_path_platform_redis_ip_redis_port[0],currency_path_platform_redis_ip_redis_port[1],currency_path_platform_redis_ip_redis_port[2],logger,last_rtdio)
         except Exception as e:
             logger.info(str(e))
             msg = traceback.format_exc()
             logger.info(msg)
 
 
-def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
+def calc_profit(r, currency_a,currency_b, path_list,platform,logger,last_rtdio):
     #currency_name = mtn
     #os.pid
     pid =str(os.getpid())
@@ -640,17 +647,24 @@ def calc_profit(r, currency_a,currency_b, path_list,platform,logger):
             for log in log_info_list:
                 logger.info(log)
             continue
+
+        if x_end  / x_begin <= last_rtdio:
+            log_info_list.append('此次比例:'+str(x_end/x_begin)+' 低于或等于上次计算比例:'+str(last_rtdio))
+            return last_rtdio
         # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998 and x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin > 1.005:
         #     # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998:
         # print('pid: ' + pid + '--', x_begin , x_end * 0.998 * 0.998 * 0.998 * 0.998,
         #       x_begin * 1.005 < x_end * 0.998 * 0.998 * 0.998 * 0.998, a_num_list, a_price_list)
         # print(path)
+        log_info_list.append('此次比例:' + str(x_end / x_begin) + ' 高于上次计算比例:' + str(last_rtdio))
+        last_rtdio = x_end  / x_begin
+
         for log in log_info_list:
             logger.info(log)
         #放redis-list
         result_list_redis(r, currency_a, currency_b, a_num_list, a_price_list,platform,x_begin,x_part_2_y_count_begin,x_end)
 
-    return 0
+    return last_rtdio
 
 def result_list_redis(r,currency_a,currency_b,a_num_list,a_price_record,platform,x_begin,y_middle,x_end):
     # {"path": [{"from": "iost", "to": "eth", "type": "buy", "market": "false", "amount": "1", "price": "1"},
@@ -1183,3 +1197,15 @@ def result_list_redis_recalc(r,currency_a,currency_b,a_num_list,a_price_record,p
     # print("赚钱路径")
     # print('pid: ' +str(os.getpid())+'-'+currency_a+'-'+currency_b+'--'+result_json)
     r.lpush("list_result",result_json)
+
+# #hsr_eth='{"action":"MarketDepthData","platform":"huobi","symbol":"hsreth","asks":[[0.0007722,12.4201],[0.00077226,14],[0.00077338,82],[0.000774,681.6],[0.000775,117.99]],"bids":[[0.00077052,2.6126],[0.000769,333.9326],[0.00076761,30],[0.00076721,1.3565],[0.000767,415.2]],"timestamp":1523415065}'
+# hsr_btc='{"action":"MarketDepthData","platform":"huobi","symbol":"hsrbtc","asks":[[0.0007722,12.4201],[0.00077226,14],[0.00077338,82],[0.000774,681.6],[0.000775,117.99]],"bids":[[0.00077425,36.7906],[0.00076483,19],[0.00076761,30],[0.00076721,1.3565],[0.000767,415.2]],"timestamp":1523415065}'
+# path = '/Users/yangxi/projectpython/rectangle-arbitrage/data/paths_result.dat'
+# f = open(path, 'r')
+# path_list = []
+# for line in f.readlines():
+#     line = line.strip()
+#     a = json.loads(line)
+#     path_list.append(a)
+# #calc_fork(currency_path_platform_redis_ip_redis_port)
+# calc_fork(('mtn',path_list,'huobi','127.0.0.1','6380'))
