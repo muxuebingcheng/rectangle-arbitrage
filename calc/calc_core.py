@@ -714,20 +714,20 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
     #os.pid
     pid =str(os.getpid())
     if currency_a == currency_b:
-        return 0,0,0,0
+        return 'false'
     #检查货币信息
     log_info_list=[]
     #print('pid: ' +pid+ '++'+currency_a+'----------'+currency_b)
     log_info_list.append('pid: ' +pid+ ' : '+currency_a+'-------------------------------------------'+currency_b)
     if r.get(currency_b  + '-'+ 'btc') == '':
-        return
+        return 'false'
     if r.get(currency_b + '-' + 'eth') == '':
-        return
+        return 'false'
 
     key_pre = currency_a + '-' + 'eth'
     test_null = r.get(key_pre + '_ask_price_0')
     if(test_null == None):
-        return 0,0,0,0
+        return 'false'
     currency_x_a_list =[
         key_pre + '_ask_price_0', key_pre + '_ask_num_0', #0 1
         key_pre + '_ask_price_1', key_pre + '_ask_num_1', #2 3
@@ -761,7 +761,7 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
     key_pre = currency_b + '-' + 'eth'
     test_null = r.get(key_pre + '_ask_price_0')
     if (test_null == None):
-        return 0, 0, 0, 0
+        return 'false'
     currency_x_b_list = [
         key_pre + '_ask_price_0', key_pre + '_ask_num_0',  # 0 1
         key_pre + '_ask_price_1', key_pre + '_ask_num_1',  # 2 3
@@ -795,7 +795,7 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
     key_pre = currency_a + '-' + 'btc'
     test_null = r.get(key_pre + '_ask_price_0')
     if (test_null == None):
-        return 0, 0, 0, 0
+        return 'false'
     currency_y_a_list = [
         key_pre + '_ask_price_0', key_pre + '_ask_num_0',  # 0 1
         key_pre + '_ask_price_1', key_pre + '_ask_num_1',  # 2 3
@@ -827,7 +827,7 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
     key_pre = currency_b + '-' + 'btc'
     test_null = r.get(key_pre + '_ask_price_0')
     if (test_null == None):
-        return 0, 0, 0, 0
+        return 'false'
     currency_y_b_list = [
         key_pre + '_ask_price_0', key_pre + '_ask_num_0',  # 0 1
         key_pre + '_ask_price_1', key_pre + '_ask_num_1',  # 2 3
@@ -1010,7 +1010,7 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
                 break
 
         if a_2_begin_for_calc != 0:
-            return
+            return 'false'
 
 
         y_3_begin = y_2_sum * 0.998
@@ -1035,7 +1035,7 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
             break
 
     if y_3_begin_for_calc != 0:
-        return
+        return 'false'
 
     a3_num_record = b_3_sum
     b_4_begin = b_3_sum * 0.998
@@ -1124,12 +1124,12 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
                 logger.info(log)
 
     if x_end / float(x_begin) < 1.005:
-        return 0
+        return 'false'
 
     if float(a2_done) * float(a4_done) == float('0'):
         for log in log_info_list:
             logger.info(log)
-        return 0
+        return 'false'
     # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998 and x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin > 1.005:
     #     # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998:
     # print('pid: ' + pid + '--', x_begin , x_end * 0.998 * 0.998 * 0.998 * 0.998,
@@ -1140,7 +1140,7 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
     # 放redis-list
     result_list_redis_recalc(r, currency_a, currency_b, a_num_list, a_price_list, platform, x_begin, y_middle,x_end,uniqid,status)
 
-    return 0
+    return 'ture'
 
 
 
@@ -1156,6 +1156,8 @@ def recalc(redisip_redisport_platform):
             continue
         try:
             recalc_info_str = recalc_info_byte.decode()
+            logger.info(str(time.time()))
+            logger.info(recalc_info_str)
             recalc_info_json = json.loads(recalc_info_str)
             currency_a = recalc_info_json['path'][0]['from']
             currency_b = recalc_info_json['path'][3]['from']
@@ -1173,7 +1175,12 @@ def recalc(redisip_redisport_platform):
                 y_middle = recalc_info_json['path'][2]['ymiddle']
             else:
                 continue
-            recalc_profit(r, currency_a, currency_b, step, logger, recalc_info_json, platform)
+            recalc_result = 'false'
+            while True:
+                recalc_result = recalc_profit(r, currency_a, currency_b, step, logger, recalc_info_json, platform)
+                if recalc_result == 'ture':
+                    break
+            logger.info(str(time.time()))
         except Exception as e:
             logger.info(str(e))
             msg = traceback.format_exc()
@@ -1221,3 +1228,6 @@ def result_list_redis_recalc(r,currency_a,currency_b,a_num_list,a_price_record,p
 #     path_list.append(a)
 # #calc_fork(currency_path_platform_redis_ip_redis_port)
 # calc_fork(('mtn',path_list,'huobi','127.0.0.1','6380'))
+
+
+# recalc(('127.0.0.1','6380','huobi'))
