@@ -46,6 +46,7 @@ def calc_fork(currency_path_platform_redis_ip_redis_port):
         if timestamp_now - timestamp_last > 10 :
             timestamp_last = timestamp_now
             last_ratio = 0
+            logger.info('超过10秒，重置计算比率为0')
         try:
             last_ratio=calc_profit(r,currency_a,currency_path_platform_redis_ip_redis_port[0],currency_path_platform_redis_ip_redis_port[1],currency_path_platform_redis_ip_redis_port[2],logger,last_ratio)
         except Exception as e:
@@ -651,6 +652,7 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
             if(log_switch.decode() == currency_b):
                 for log in log_info_list:
                     logger.info(log)
+                    log_info_list.clear()
 
         if x_end  / x_begin < 1.005:
             break
@@ -658,10 +660,11 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
         if   float(a2_done) * float(a4_done) == float('0'):
             for log in log_info_list:
                 logger.info(log)
+                log_info_list.clear()
             continue
 
         if x_end  / x_begin <= last_ratio:
-            log_info_list.append('此次比例:' + str(x_end/x_begin) +' 低于或等于上次计算比例:' + str(last_ratio))
+            logger.info('此次比例:' + str(x_end/x_begin) +' 低于或等于上次计算比例:' + str(last_ratio))
             return last_ratio
         # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998 and x_end * 0.998 * 0.998 * 0.998 * 0.998 / x_begin > 1.005:
         #     # if x_begin < x_end * 0.998 * 0.998 * 0.998 * 0.998:
