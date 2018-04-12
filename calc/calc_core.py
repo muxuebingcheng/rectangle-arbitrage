@@ -60,15 +60,15 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     #os.pid
     pid =str(os.getpid())
     if currency_a == currency_b:
-        return 0
+        return last_ratio
     #检查货币信息
     log_info_list=[]
     #print('pid: ' +pid+ '++'+currency_a+'----------'+currency_b)
     log_info_list.append('pid: ' +pid+ ' : '+currency_a+'-------------------------------------------'+currency_b)
     if r.get(currency_b  + '-'+ 'btc') == '':
-        return 0
+        return last_ratio
     if r.get(currency_b + '-' + 'eth') == '':
-        return 0
+        return last_ratio
     #货币信息存在 计算x起和a
     #获取路径
     # 先算[[0],[0],[0],[0]]
@@ -88,7 +88,7 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     key_pre = currency_a + '-' + 'eth'
     test_null = r.get(key_pre + '_ask_price_0')
     if(test_null == None):
-        return 0
+        return last_ratio
     currency_x_a_list =[
         key_pre + '_ask_price_0', key_pre + '_ask_num_0', #0 1
         key_pre + '_ask_price_1', key_pre + '_ask_num_1', #2 3
@@ -122,7 +122,7 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     key_pre = currency_b + '-' + 'eth'
     test_null = r.get(key_pre + '_ask_price_0')
     if (test_null == None):
-        return 0
+        return last_ratio
     currency_x_b_list = [
         key_pre + '_ask_price_0', key_pre + '_ask_num_0',  # 0 1
         key_pre + '_ask_price_1', key_pre + '_ask_num_1',  # 2 3
@@ -156,7 +156,7 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     key_pre = currency_a + '-' + 'btc'
     test_null = r.get(key_pre + '_ask_price_0')
     if (test_null == None):
-        return 0
+        return last_ratio
     currency_y_a_list = [
         key_pre + '_ask_price_0', key_pre + '_ask_num_0',  # 0 1
         key_pre + '_ask_price_1', key_pre + '_ask_num_1',  # 2 3
@@ -188,7 +188,7 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     key_pre = currency_b + '-' + 'btc'
     test_null = r.get(key_pre + '_ask_price_0')
     if (test_null == None):
-        return 0
+        return last_ratio
     currency_y_b_list = [
         key_pre + '_ask_price_0', key_pre + '_ask_num_0',  # 0 1
         key_pre + '_ask_price_1', key_pre + '_ask_num_1',  # 2 3
@@ -257,7 +257,7 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     y_a_bids_num[4] = 0.05*currency_y_a_info_list[19]
 
     if (y_a_bids_price[0] - y_a_bids_price[1]) / y_a_bids_price[0] > 0.015 or (y_a_bids_price[1] - y_a_bids_price[2]) / y_a_bids_price[1] > 0.015 or (y_a_bids_price[2] - y_a_bids_price[3]) / y_a_bids_price[2] > 0.015 or (y_a_bids_price[3] - y_a_bids_price[4]) / y_a_bids_price[3] > 0.015 :
-        return 0
+        return last_ratio
 
     x_a_asks_price = [0] * 5
     x_a_asks_num = [0] * 5
@@ -273,7 +273,7 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     x_a_asks_num[4] = 0.05*currency_x_a_info_list[9]
 
     if (x_a_asks_price[1] - x_a_asks_price[0]) / x_a_asks_price[0] > 0.015 or (x_a_asks_price[2] - x_a_asks_price[1]) / x_a_asks_price[1] > 0.015 or (x_a_asks_price[3] - x_a_asks_price[2]) / x_a_asks_price[2] > 0.015 or (x_a_asks_price[4] - x_a_asks_price[3]) / x_a_asks_price[3] > 0.015 :
-        return 0
+        return last_ratio
 
     x_b_bids_price = [0] * 5
     x_b_bids_num = [0] * 5
@@ -289,7 +289,7 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     x_b_bids_num[4] = 0.05*currency_x_b_info_list[19]
 
     if (x_b_bids_price[0] - x_b_bids_price[1]) / x_b_bids_price[0] > 0.015 or (x_b_bids_price[1] - x_b_bids_price[2]) / x_b_bids_price[1] > 0.015 or (x_b_bids_price[2] - x_b_bids_price[3]) / x_b_bids_price[2] > 0.015 or (x_b_bids_price[3] - x_b_bids_price[4]) / x_b_bids_price[3] > 0.015 :
-        return 0
+        return last_ratio
 
     y_b_asks_price = [0] * 5
     y_b_asks_num = [0] * 5
@@ -305,7 +305,7 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     y_b_asks_num[4] = 0.05*currency_y_b_info_list[9]
 
     if (y_b_asks_price[1] - y_b_asks_price[0]) / y_b_asks_price[0] > 0.015 or (y_b_asks_price[2] - y_b_asks_price[1]) / y_b_asks_price[1] > 0.015 or (y_b_asks_price[3] - y_b_asks_price[2]) / y_b_asks_price[2] > 0.015 or (y_b_asks_price[4] - y_b_asks_price[3]) / y_b_asks_price[3] > 0.015 :
-        return 0
+        return last_ratio
 
     y_b_bids_price = [0] * 5
     y_b_bids_num = [0] * 5
@@ -641,7 +641,7 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
         # print('pid: ' + pid + '--', x_begin * 1.05, x_end * 0.998 * 0.998 * 0.998 * 0.998,
         #        x_begin * 1.005 < x_end * 0.998 * 0.998 * 0.998 * 0.998, a_num_list, a_price_list)
         #print(path)
-        log_info_list.append('pid: ' + str(pid) + '--'+ str(x_begin * 1.05)+str(x_end)+
+        log_info_list.append('pid: ' + str(pid) + '--'+ str(x_begin * 1.005)+str(x_end)+
                              str(x_begin * 1.005 < x_end )+
                              a1_done+','+a2_done+','+a3_done+','+a4_done+','
                              +p1_done+','+p2_done+','+p3_done+','+p4_done
