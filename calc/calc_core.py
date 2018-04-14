@@ -246,15 +246,15 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     y_a_bids_price = [0] * 5
     y_a_bids_num = [0] * 5
     y_a_bids_price[0] = currency_y_a_info_list[10] #price
-    y_a_bids_num[0] = 0.01*currency_y_a_info_list[11]   #num
+    y_a_bids_num[0] = 0.05*currency_y_a_info_list[11]   #num
     y_a_bids_price[1] = currency_y_a_info_list[12]
-    y_a_bids_num[1] = 0.02*currency_y_a_info_list[13]
+    y_a_bids_num[1] = 0.06*currency_y_a_info_list[13]
     y_a_bids_price[2] = currency_y_a_info_list[14]
-    y_a_bids_num[2] = 0.03*currency_y_a_info_list[15]
+    y_a_bids_num[2] = 0.07*currency_y_a_info_list[15]
     y_a_bids_price[3] = currency_y_a_info_list[16]
-    y_a_bids_num[3] = 0.04*currency_y_a_info_list[17]
+    y_a_bids_num[3] = 0.08*currency_y_a_info_list[17]
     y_a_bids_price[4] = currency_y_a_info_list[18]
-    y_a_bids_num[4] = 0.05*currency_y_a_info_list[19]
+    y_a_bids_num[4] = 0.09*currency_y_a_info_list[19]
 
     if (y_a_bids_price[0] - y_a_bids_price[1]) / y_a_bids_price[0] > 0.015 or (y_a_bids_price[1] - y_a_bids_price[2]) / y_a_bids_price[1] > 0.015 or (y_a_bids_price[2] - y_a_bids_price[3]) / y_a_bids_price[2] > 0.015 or (y_a_bids_price[3] - y_a_bids_price[4]) / y_a_bids_price[3] > 0.015 :
         return last_ratio
@@ -262,15 +262,15 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     x_a_asks_price = [0] * 5
     x_a_asks_num = [0] * 5
     x_a_asks_price[0] = currency_x_a_info_list[0]
-    x_a_asks_num[0] = 0.01*currency_x_a_info_list[1]
+    x_a_asks_num[0] = 0.05*currency_x_a_info_list[1]
     x_a_asks_price[1] = currency_x_a_info_list[2]
-    x_a_asks_num[1] = 0.02*currency_x_a_info_list[3]
+    x_a_asks_num[1] = 0.06*currency_x_a_info_list[3]
     x_a_asks_price[2] = currency_x_a_info_list[4]
-    x_a_asks_num[2] = 0.03*currency_x_a_info_list[5]
+    x_a_asks_num[2] = 0.07*currency_x_a_info_list[5]
     x_a_asks_price[3] = currency_x_a_info_list[6]
-    x_a_asks_num[3] = 0.04*currency_x_a_info_list[7]
+    x_a_asks_num[3] = 0.08*currency_x_a_info_list[7]
     x_a_asks_price[4] = currency_x_a_info_list[8]
-    x_a_asks_num[4] = 0.05*currency_x_a_info_list[9]
+    x_a_asks_num[4] = 0.09*currency_x_a_info_list[9]
 
     if (x_a_asks_price[1] - x_a_asks_price[0]) / x_a_asks_price[0] > 0.015 or (x_a_asks_price[2] - x_a_asks_price[1]) / x_a_asks_price[1] > 0.015 or (x_a_asks_price[3] - x_a_asks_price[2]) / x_a_asks_price[2] > 0.015 or (x_a_asks_price[4] - x_a_asks_price[3]) / x_a_asks_price[3] > 0.015 :
         return last_ratio
@@ -278,15 +278,15 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     x_b_bids_price = [0] * 5
     x_b_bids_num = [0] * 5
     x_b_bids_price[0] = currency_x_b_info_list[10]
-    x_b_bids_num[0] = 0.01*currency_x_b_info_list[11]
+    x_b_bids_num[0] = 0.05*currency_x_b_info_list[11]
     x_b_bids_price[1] = currency_x_b_info_list[12]
-    x_b_bids_num[1] = 0.02*currency_x_b_info_list[13]
+    x_b_bids_num[1] = 0.06*currency_x_b_info_list[13]
     x_b_bids_price[2] = currency_x_b_info_list[14]
-    x_b_bids_num[2] = 0.03*currency_x_b_info_list[15]
+    x_b_bids_num[2] = 0.07*currency_x_b_info_list[15]
     x_b_bids_price[3] = currency_x_b_info_list[16]
-    x_b_bids_num[3] = 0.04*currency_x_b_info_list[17]
+    x_b_bids_num[3] = 0.08*currency_x_b_info_list[17]
     x_b_bids_price[4] = currency_x_b_info_list[18]
-    x_b_bids_num[4] = 0.05*currency_x_b_info_list[19]
+    x_b_bids_num[4] = 0.09*currency_x_b_info_list[19]
 
     if (x_b_bids_price[0] - x_b_bids_price[1]) / x_b_bids_price[0] > 0.015 or (x_b_bids_price[1] - x_b_bids_price[2]) / x_b_bids_price[1] > 0.015 or (x_b_bids_price[2] - x_b_bids_price[3]) / x_b_bids_price[2] > 0.015 or (x_b_bids_price[3] - x_b_bids_price[4]) / x_b_bids_price[3] > 0.015 :
         return last_ratio
@@ -294,15 +294,15 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
     y_b_asks_price = [0] * 5
     y_b_asks_num = [0] * 5
     y_b_asks_price[0] = currency_y_b_info_list[0]
-    y_b_asks_num[0] = 0.01*currency_y_b_info_list[1]
+    y_b_asks_num[0] = 0.05*currency_y_b_info_list[1]
     y_b_asks_price[1] = currency_y_b_info_list[2]
-    y_b_asks_num[1] = 0.02*currency_y_b_info_list[3]
+    y_b_asks_num[1] = 0.06*currency_y_b_info_list[3]
     y_b_asks_price[2] = currency_y_b_info_list[4]
-    y_b_asks_num[2] = 0.03*currency_y_b_info_list[5]
+    y_b_asks_num[2] = 0.07*currency_y_b_info_list[5]
     y_b_asks_price[3] = currency_y_b_info_list[6]
-    y_b_asks_num[3] = 0.04*currency_y_b_info_list[7]
+    y_b_asks_num[3] = 0.08*currency_y_b_info_list[7]
     y_b_asks_price[4] = currency_y_b_info_list[8]
-    y_b_asks_num[4] = 0.05*currency_y_b_info_list[9]
+    y_b_asks_num[4] = 0.09*currency_y_b_info_list[9]
 
     if (y_b_asks_price[1] - y_b_asks_price[0]) / y_b_asks_price[0] > 0.015 or (y_b_asks_price[2] - y_b_asks_price[1]) / y_b_asks_price[1] > 0.015 or (y_b_asks_price[3] - y_b_asks_price[2]) / y_b_asks_price[2] > 0.015 or (y_b_asks_price[4] - y_b_asks_price[3]) / y_b_asks_price[3] > 0.015 :
         return last_ratio
@@ -379,7 +379,7 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
                     # "bids":[[0.01105,2.2376],[0.010981,16.95],[0.010979,34],[0.010978,82.2761],[0.010972,0.0007]]
                     x_part_0_a_cout = x_part_0_a_cout + x_a_asks_num[ai]
                     # x count                               price
-                    x_part_0_x_cout = x_part_0_x_cout + x_b_asks_price[ai] * x_a_asks_num[ai]
+                    x_part_0_x_cout = x_part_0_x_cout + x_a_asks_num[ai] * x_a_asks_num[ai]
                     1
                 i = i + 1
             elif i == 1:
@@ -885,54 +885,54 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
     y_a_bids_price = [0] * 5
     y_a_bids_num = [0] * 5
     y_a_bids_price[0] = currency_y_a_info_list[10] #price
-    y_a_bids_num[0] = 0.01*currency_y_a_info_list[11]   #num
+    y_a_bids_num[0] = 0.05*currency_y_a_info_list[11]   #num
     y_a_bids_price[1] = currency_y_a_info_list[12]
-    y_a_bids_num[1] = 0.02*currency_y_a_info_list[13]
+    y_a_bids_num[1] = 0.06*currency_y_a_info_list[13]
     y_a_bids_price[2] = currency_y_a_info_list[14]
-    y_a_bids_num[2] = 0.03*currency_y_a_info_list[15]
+    y_a_bids_num[2] = 0.07*currency_y_a_info_list[15]
     y_a_bids_price[3] = currency_y_a_info_list[16]
-    y_a_bids_num[3] = 0.04*currency_y_a_info_list[17]
+    y_a_bids_num[3] = 0.08*currency_y_a_info_list[17]
     y_a_bids_price[4] = currency_y_a_info_list[18]
-    y_a_bids_num[4] = 0.05*currency_y_a_info_list[19]
+    y_a_bids_num[4] = 0.09*currency_y_a_info_list[19]
 
     x_a_asks_price = [0] * 5
     x_a_asks_num = [0] * 5
     x_a_asks_price[0] = currency_x_a_info_list[0]
-    x_a_asks_num[0] = 0.01*currency_x_a_info_list[1]
+    x_a_asks_num[0] = 0.05*currency_x_a_info_list[1]
     x_a_asks_price[1] = currency_x_a_info_list[2]
-    x_a_asks_num[1] = 0.02*currency_x_a_info_list[3]
+    x_a_asks_num[1] = 0.06*currency_x_a_info_list[3]
     x_a_asks_price[2] = currency_x_a_info_list[4]
-    x_a_asks_num[2] = 0.03*currency_x_a_info_list[5]
+    x_a_asks_num[2] = 0.07*currency_x_a_info_list[5]
     x_a_asks_price[3] = currency_x_a_info_list[6]
-    x_a_asks_num[3] = 0.04*currency_x_a_info_list[7]
+    x_a_asks_num[3] = 0.08*currency_x_a_info_list[7]
     x_a_asks_price[4] = currency_x_a_info_list[8]
-    x_a_asks_num[4] = 0.05*currency_x_a_info_list[9]
+    x_a_asks_num[4] = 0.09*currency_x_a_info_list[9]
 
     x_b_bids_price = [0] * 5
     x_b_bids_num = [0] * 5
     x_b_bids_price[0] = currency_x_b_info_list[10]
-    x_b_bids_num[0] = 0.01*currency_x_b_info_list[11]
+    x_b_bids_num[0] = 0.05*currency_x_b_info_list[11]
     x_b_bids_price[1] = currency_x_b_info_list[12]
-    x_b_bids_num[1] = 0.02*currency_x_b_info_list[13]
+    x_b_bids_num[1] = 0.06*currency_x_b_info_list[13]
     x_b_bids_price[2] = currency_x_b_info_list[14]
-    x_b_bids_num[2] = 0.03*currency_x_b_info_list[15]
+    x_b_bids_num[2] = 0.07*currency_x_b_info_list[15]
     x_b_bids_price[3] = currency_x_b_info_list[16]
-    x_b_bids_num[3] = 0.04*currency_x_b_info_list[17]
+    x_b_bids_num[3] = 0.08*currency_x_b_info_list[17]
     x_b_bids_price[4] = currency_x_b_info_list[18]
-    x_b_bids_num[4] = 0.05*currency_x_b_info_list[19]
+    x_b_bids_num[4] = 0.09*currency_x_b_info_list[19]
 
     y_b_asks_price = [0] * 5
     y_b_asks_num = [0] * 5
     y_b_asks_price[0] = currency_y_b_info_list[0]
-    y_b_asks_num[0] = 0.01*currency_y_b_info_list[1]
+    y_b_asks_num[0] = 0.05*currency_y_b_info_list[1]
     y_b_asks_price[1] = currency_y_b_info_list[2]
-    y_b_asks_num[1] = 0.02*currency_y_b_info_list[3]
+    y_b_asks_num[1] = 0.06*currency_y_b_info_list[3]
     y_b_asks_price[2] = currency_y_b_info_list[4]
-    y_b_asks_num[2] = 0.03*currency_y_b_info_list[5]
+    y_b_asks_num[2] = 0.07*currency_y_b_info_list[5]
     y_b_asks_price[3] = currency_y_b_info_list[6]
-    y_b_asks_num[3] = 0.04*currency_y_b_info_list[7]
+    y_b_asks_num[3] = 0.08*currency_y_b_info_list[7]
     y_b_asks_price[4] = currency_y_b_info_list[8]
-    y_b_asks_num[4] = 0.05*currency_y_b_info_list[9]
+    y_b_asks_num[4] = 0.09*currency_y_b_info_list[9]
 
     y_b_bids_price = [0] * 5
     y_b_bids_num = [0] * 5
