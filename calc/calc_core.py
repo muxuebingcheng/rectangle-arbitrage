@@ -1009,7 +1009,7 @@ def recalc_profit(r, currency_a,currency_b,step,logger,recalc_info_json,platform
             else:
                 y_2_sum = a_2_begin_for_calc * y_a_bids_price[ai]
                 a_2_begin_for_calc = 0
-                a2_price_record = x_a_bids_price[ai]
+                a2_price_record = y_a_bids_price[ai]
                 break
 
         if a_2_begin_for_calc != 0:
