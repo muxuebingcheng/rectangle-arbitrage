@@ -470,9 +470,9 @@ def calc_profit(r, currency_a, currency_b, path_list, platform, logger, last_rat
 
         # 非0校验
         if   float(a2_done) * float(a4_done) == float('0'):
-            for log in log_info_list:
-                logger.info(log)
-                log_info_list.clear()
+            # for log in log_info_list:
+            #     logger.info(log)
+            log_info_list.clear()
             continue
 
         #校验精度
