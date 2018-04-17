@@ -25,10 +25,10 @@ def gen_currency_pair_info(currency_pair_info_str,currency_pair_info,currency_li
     # #判断消息类型 若是重算消息 放入重算队列
     try:
         if 'action' in currency_pair_info.keys():
-            print(currency_pair_info_str, 1)
+            #print(currency_pair_info_str, 1)
             action = currency_pair_info['action']
             if action == 'RbackPath':
-                print(currency_pair_info_str,2)
+                #print(currency_pair_info_str,2)
                 r.lpush("list_recalc", currency_pair_info_str)
                 return
     except Exception as e:

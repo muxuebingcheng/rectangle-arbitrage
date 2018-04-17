@@ -86,6 +86,7 @@ def main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,re
                 if (data_info == None):
                     continue
                 currency_pair_info_str = data_info
+                #print(currency_pair_info_str)
                 currency_pair_info = json.loads(data_info)
                 generate_currency_pair_info.gen_currency_pair_info(currency_pair_info_str, currency_pair_info,
                                                                    currency_list, r);
@@ -158,9 +159,16 @@ def main(conf_file_name):
         line = line.strip()
         a = json.loads(line)
         path_list.append(a)
+    f.close()
+
+    limit_info_file = os.path.abspath(os.curdir) + '/data' + '/limit.dat'
+    f = open(limit_info_file, 'r')
+    limit_info = f.readline()
+    f.close()
+    limit_info_json = json.loads(limit_info)
 
     for x in currency_list:
-        currency_path = (x, path_list, platform,redis_ip,redis_port)
+        currency_path = (x, path_list, platform,redis_ip,redis_port,limit_info_json)
         p.apply_async(calc_core.calc_fork, args=(currency_path,))
     logger.info('Waiting for all subprocesses done...')
     p.close()
@@ -169,7 +177,7 @@ def main(conf_file_name):
     #recalc process pool
     p_recalc = Pool(int(recalc_num))
     for i in range(int(recalc_num)):
-        p_recalc.apply_async(calc_core.recalc, args=((redis_ip,redis_port,platform),))
+        p_recalc.apply_async(calc_core.recalc, args=((redis_ip,redis_port,platform,limit_info_json),))
 
     while 1:
         try:
