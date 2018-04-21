@@ -150,7 +150,7 @@ def main(conf_file_name):
     r = redis.Redis(connection_pool=pool)
 
     #启动货币处理进程池
-    p = Pool(len(currency_list))
+    # p = Pool(len(currency_list))
     path = os.path.abspath(os.curdir) + '/data' + '/paths_result.dat'
     logger.info(path)
     f = open(path, 'r')
@@ -167,12 +167,12 @@ def main(conf_file_name):
     f.close()
     limit_info_json = json.loads(limit_info)
 
-    for x in currency_list:
-        currency_path = (x, path_list, platform,redis_ip,redis_port,limit_info_json)
-        p.apply_async(calc_core.calc_fork, args=(currency_path,))
-    logger.info('Waiting for all subprocesses done...')
-    p.close()
-    logger.info('All subprocesses done.')
+    # for x in currency_list:
+    #     currency_path = (x, path_list, platform,redis_ip,redis_port,limit_info_json)
+    #     p.apply_async(calc_core.calc_fork, args=(currency_path,))
+    # logger.info('Waiting for all subprocesses done...')
+    # p.close()
+    # logger.info('All subprocesses done.')
 
     #recalc process pool
     p_recalc = Pool(int(recalc_num))
