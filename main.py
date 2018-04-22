@@ -31,12 +31,8 @@ def fill_precision_info(precision_info_dict,r):
         r.set(key,price_pre)
 
 
-def main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,redis_port):
+def main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,redis_port,recalc_num_limit,limit_info_json):
     #redis-cli -h 127.0.0.1 -p 6380 keys "*" | xargs redis-cli -h 127.0.0.1 -p 6380 del
-    command = ' redis-cli -h '+ str(redis_ip) + ' -p ' + str(redis_port) + ' keys "*" | xargs redis-cli -h ' + str(redis_ip) + ' -p ' + str(redis_port) + ' del '
-    logger.info(command)
-    os.system(command)
-
     ws = create_connection("ws://47.104.136.5:8201")
     if ws.connected:
         # 链接成功 发送验证信息
@@ -86,10 +82,10 @@ def main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,re
                 if (data_info == None):
                     continue
                 currency_pair_info_str = data_info
-                #print(currency_pair_info_str)
+                # print(currency_pair_info_str)
                 currency_pair_info = json.loads(data_info)
-                generate_currency_pair_info.gen_currency_pair_info(currency_pair_info_str, currency_pair_info,
-                                                                   currency_list, r);
+                generate_currency_pair_info.gen_currency_pair_info(logger,currency_pair_info_str, currency_pair_info,
+                                                                   currency_list, r,recalc_num_limit,(redis_ip,redis_port,platform,limit_info_json));
 
         else:
             pplogger = tools.logger.Logger('ppid', str(pid)+'ppid.log')
@@ -144,6 +140,10 @@ def main(conf_file_name):
     is_send_message=conf.get('conf', 'is_send_message')
     currency_list = json.loads(conf.get('conf', 'currency_list'))
     recalc_num = conf.get('conf','recalc_num')
+    command = ' redis-cli -h ' + str(redis_ip) + ' -p ' + str(redis_port) + ' keys "*" | xargs redis-cli -h ' + str(
+        redis_ip) + ' -p ' + str(redis_port) + ' del '
+    logger.info(command)
+    os.system(command)
 
     pool = redis.ConnectionPool(host=redis_ip, port=redis_port,
                                 decode_responses=True)  # host是redis主机，需要redis服务端和客户端都起着 redis默认端口是6379
@@ -167,21 +167,25 @@ def main(conf_file_name):
     f.close()
     limit_info_json = json.loads(limit_info)
 
-    # for x in currency_list:
-    #     currency_path = (x, path_list, platform,redis_ip,redis_port,limit_info_json)
-    #     p.apply_async(calc_core.calc_fork, args=(currency_path,))
-    # logger.info('Waiting for all subprocesses done...')
-    # p.close()
-    # logger.info('All subprocesses done.')
 
-    #recalc process pool
+    # recalc process pool
     p_recalc = Pool(int(recalc_num))
     for i in range(int(recalc_num)):
-        p_recalc.apply_async(calc_core.recalc, args=((redis_ip,redis_port,platform,limit_info_json),))
+        p_recalc.apply_async(calc_core.recalc, args=(redis_ip,redis_port,platform,limit_info_json,))
+    #主进程睡5秒 线程池中的子进程初始化队列完成 r.lpush("recalc_process_list",pid)
+    time.sleep(1)
+    #初始化子进程信息队列
+    list_len = r.llen("recalc_process_list")
+    #recalc_process_list_status 记录了50个子进程的计算情况
+    for i in range(list_len):
+        ppid_in_list = r.lindex("recalc_process_list",i)
+        #status: none 代表空闲
+        #        uniq_id 代表正在计算的路径
+        r.hset("recalc_process_list_status",str(ppid_in_list),"none")
 
     while 1:
         try:
-            main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,redis_port)
+            main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,redis_port,recalc_num,limit_info_json)
         except Exception as e:
             logger.info(e)
             msg = traceback.format_exc()
