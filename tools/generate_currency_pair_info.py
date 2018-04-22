@@ -62,8 +62,8 @@ def gen_currency_pair_info(logger,currency_pair_info_str,currency_pair_info,curr
             #只需要填充
             fill_price_number_to_redis(currency_pair_info,r)
 
-    currency_pair_info_str=r.get("yangxi")
-    currency_pair_info = json.loads(currency_pair_info_str)
+    # currency_pair_info_str=r.get("yangxi")
+    # currency_pair_info = json.loads(currency_pair_info_str)
 
     try:
         if 'action' in currency_pair_info.keys():
