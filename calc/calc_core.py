@@ -451,6 +451,8 @@ def recalc(redis_ip,redis_port,platform,limit_info_json):
             #获取当前进程的状态 若为none 则不计算
             status = r.hget("recalc_process_list_status", str(pid))
             #通过主进程睡眠来保证
+            if status == None:
+                continue
             status = status.decode()
             if status == "none":
                 continue
