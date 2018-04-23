@@ -17,53 +17,6 @@ def format_currency_name(ori_name):
     return ori_name[:-3]
 
 def gen_currency_pair_info(logger,currency_pair_info_str,currency_pair_info,currency_list,r,recalc_num_limit,redis_ip_redis_port_platform_limit):
-    #填充事实信息货币
-    if 'symbol' in currency_pair_info.keys():
-        a=1
-    else:
-        #print("数据未到齐")
-        return
-    currency_pair_name = format_name(currency_pair_info['symbol'])
-    # 装载redis数据
-    currency_pair_name_list = currency_pair_name.split('-');
-    if currency_pair_name_list[1] == 'eth':
-        timestamp_now = int(round(time.time() * 1000))
-        # 先找配对的btc
-        key = currency_pair_name_list[0] + '-' + 'btc'
-        r.set(currency_pair_name, timestamp_now)
-
-        #for test
-        r.set(key, timestamp_now)
-        if r.get(key)=='':
-            return
-        else:
-            timestamp_redis = int(r.get(key))
-
-        if (timestamp_now - timestamp_redis > 1000):
-            # 对应货币对信息过期
-            r.delete(key)
-        else:
-            # 只需要填充
-            fill_price_number_to_redis(currency_pair_info,r)
-
-    # btc
-    else:
-        timestamp_now = int(round(time.time() * 1000))
-        # 先找配对的eth
-        key = currency_pair_name_list[0] + '-' + 'eth'
-        r.set(currency_pair_name, timestamp_now)
-        timestamp_redis = r.get(key)
-        if timestamp_redis==None:
-            timestamp_redis = timestamp_now
-        if (timestamp_now - int(timestamp_redis) > 1000):
-            # 对应货币对信息过期
-            r.delete(key)
-        else:
-            #只需要填充
-            fill_price_number_to_redis(currency_pair_info,r)
-
-    # currency_pair_info_str=r.get("yangxi")
-    # currency_pair_info = json.loads(currency_pair_info_str)
 
     try:
         if 'action' in currency_pair_info.keys():
@@ -161,6 +114,55 @@ def gen_currency_pair_info(logger,currency_pair_info_str,currency_pair_info,curr
     except Exception as e:
         msg = traceback.format_exc()
         print(msg)
+
+
+    #填充事实信息货币
+    if 'symbol' in currency_pair_info.keys():
+        a=1
+    else:
+        #print("数据未到齐")
+        return
+    currency_pair_name = format_name(currency_pair_info['symbol'])
+    # 装载redis数据
+    currency_pair_name_list = currency_pair_name.split('-');
+    if currency_pair_name_list[1] == 'eth':
+        timestamp_now = int(round(time.time() * 1000))
+        # 先找配对的btc
+        key = currency_pair_name_list[0] + '-' + 'btc'
+        r.set(currency_pair_name, timestamp_now)
+
+        #for test
+        r.set(key, timestamp_now)
+        if r.get(key)=='':
+            return
+        else:
+            timestamp_redis = int(r.get(key))
+
+        if (timestamp_now - timestamp_redis > 1000):
+            # 对应货币对信息过期
+            r.delete(key)
+        else:
+            # 只需要填充
+            fill_price_number_to_redis(currency_pair_info,r)
+
+    # btc
+    else:
+        timestamp_now = int(round(time.time() * 1000))
+        # 先找配对的eth
+        key = currency_pair_name_list[0] + '-' + 'eth'
+        r.set(currency_pair_name, timestamp_now)
+        timestamp_redis = r.get(key)
+        if timestamp_redis==None:
+            timestamp_redis = timestamp_now
+        if (timestamp_now - int(timestamp_redis) > 1000):
+            # 对应货币对信息过期
+            r.delete(key)
+        else:
+            #只需要填充
+            fill_price_number_to_redis(currency_pair_info,r)
+
+    # currency_pair_info_str=r.get("yangxi")
+    # currency_pair_info = json.loads(currency_pair_info_str
 
     return
 
