@@ -444,19 +444,15 @@ def recalc(redis_ip,redis_port,platform,limit_info_json):
     logger = tools.logger.Logger(str(pid) + 'recalc', str(pid) + 'recalc.log')
     # 设置当前字进程计算的uniq_id
     r.lpush("recalc_process_list",pid)
-    try:
-        while True:
-            #generate_currency_pair_info 往redis中放数据
-            # recalc_info_str = r.get("recalc_data_" + str(pid))
-            #获取当前进程的状态 若为none 则不计算
+    while True:
+        try:
             status = r.hget("recalc_process_list_status", str(pid))
-            #通过主进程睡眠来保证
             if status == None:
                 continue
             status = status.decode()
             if status == "none":
                 continue
-            recalc_info_str = r.get("recalc_data_"+str(pid))
+            recalc_info_str = r.get("recalc_data_" + str(pid))
             if recalc_info_str == None:
                 continue
             recalc_info_json = json.loads(recalc_info_str.decode())
@@ -477,22 +473,21 @@ def recalc(redis_ip,redis_port,platform,limit_info_json):
                 x_begin = recalc_info_json['path'][0]['xbegin']
                 y_middle = recalc_info_json['path'][2]['ymiddle']
                 order_id = recalc_info_json['path'][2]['order_id']
-
             else:
                 logger.info("重算消息格式错误:" + recalc_info_str)
                 return
-
-            r.set("recalc_status_"+str(pid),"run")
-            recalc_result = recalc_profit(r, currency_a, currency_b, step, logger, recalc_info_json, platform,limit_info_json,order_id)
+            r.set("recalc_status_" + str(pid), "run")
+            recalc_result = recalc_profit(r, currency_a, currency_b, step, logger, recalc_info_json, platform,
+                                          limit_info_json, order_id)
             if recalc_result == 'ture':
-                #更新redis记录进程信息
-                status = r.hset("recalc_process_list_status", str(pid),"none")
-                break
-        logger.info(str(time.time()))
-    except Exception as e:
-        logger.info(str(e))
-        msg = traceback.format_exc()
-        logger.info(msg)
+                # 更新redis记录进程信息
+                status = r.hset("recalc_process_list_status", str(pid), "none")
+                logger.info("修复路径计算成功:" + recalc_info_str)
+                logger.info(str(time.time()))
+        except Exception as e:
+            logger.info(str(e))
+            msg = traceback.format_exc()
+            logger.info(msg)
     return
 
 def result_list_redis_recalc(r,currency_a,currency_b,a_num_list,a_price_record,platform,x_begin,y_middle,x_end,uniqid,status,step,order_id):
