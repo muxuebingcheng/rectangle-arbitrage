@@ -474,7 +474,7 @@ def recalc(redis_ip,redis_port,platform,limit_info_json):
                 y_middle = recalc_info_json['path'][2]['ymiddle']
                 order_id = recalc_info_json['path'][2]['order_id']
             else:
-                logger.info("重算消息格式错误:" + recalc_info_str)
+                logger.info("重算消息格式错误:" + recalc_info_str.decode())
                 return
             r.set("recalc_status_" + str(pid), "run")
             recalc_result = recalc_profit(r, currency_a, currency_b, step, logger, recalc_info_json, platform,
@@ -482,7 +482,7 @@ def recalc(redis_ip,redis_port,platform,limit_info_json):
             if recalc_result == 'ture':
                 # 更新redis记录进程信息
                 status = r.hset("recalc_process_list_status", str(pid), "none")
-                logger.info("修复路径计算成功:" + recalc_info_str)
+                logger.info("修复路径计算成功:" + recalc_info_str.decode())
                 logger.info(str(time.time()))
         except Exception as e:
             logger.info(str(e))
