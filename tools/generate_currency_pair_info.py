@@ -20,7 +20,7 @@ def gen_currency_pair_info(logger,currency_pair_info_str,currency_pair_info,curr
 
     try:
         if 'action' in currency_pair_info.keys():
-            print(1,currency_pair_info_str, 1)
+            # print(1,currency_pair_info_str, 1)
             action = currency_pair_info['action']
             if action == 'RbackPath':
                 print(currency_pair_info_str, 2)
