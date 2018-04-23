@@ -175,9 +175,9 @@ def main(conf_file_name):
     logger.info('All subprocesses done.')
 
     #recalc process pool
-    p_recalc = Pool(int(recalc_num))
-    for i in range(int(recalc_num)):
-        p_recalc.apply_async(calc_core.recalc, args=((redis_ip,redis_port,platform,limit_info_json),))
+    # p_recalc = Pool(int(recalc_num))
+    # for i in range(int(recalc_num)):
+    #     p_recalc.apply_async(calc_core.recalc, args=((redis_ip,redis_port,platform,limit_info_json),))
 
     while 1:
         try:
