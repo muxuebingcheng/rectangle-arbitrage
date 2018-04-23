@@ -110,6 +110,7 @@ def gen_currency_pair_info(logger,currency_pair_info_str,currency_pair_info,curr
                         logger.info("停止计算的进程的uniq_id:" + uniq_id_stop)
                         return
                 logger("未找到停止计算进程:" + uniq_id_stop)
+                return
 
     except Exception as e:
         msg = traceback.format_exc()
