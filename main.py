@@ -12,6 +12,8 @@ import configparser
 import tools.logger
 import traceback
 import signal
+import urllib.request
+import urllib.parse
 
 
 from calc import calc_core
@@ -37,6 +39,14 @@ def main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,re
     logger.info(command)
     os.system(command)
 
+    url = 'http://47.104.136.5:8001/symbols.php?platform=' + platform
+    f = urllib.request.urlopen(url)
+    precision_info = f.read().decode('utf-8')
+    precision_info_dict = json.loads(precision_info)
+    logger.info(precision_info_dict)
+    precision_info_dict = precision_info_dict['symbols']
+    fill_precision_info(precision_info_dict, r)
+
     ws = create_connection("ws://47.104.136.5:8201")
     if ws.connected:
         # 链接成功 发送验证信息
@@ -46,15 +56,15 @@ def main_process(r,key,platform,currency_list,is_send_message,logger,redis_ip,re
         data_info_dict = json.loads(data_info)
         logger.info(data_info_dict)
         # 精度信息
-        precision_request='{"action":"GetSymbols","platform":"' + platform + '"}'
-        logger.info(precision_request)
-        ws.send(precision_request,
-                opcode=0x1)
-        precision_info = ws.recv()
-        precision_info_dict = json.loads(precision_info)
-        logger.info(precision_info_dict)
-        precision_info_dict = precision_info_dict['symbols']
-        fill_precision_info(precision_info_dict, r)
+        # precision_request='{"action":"GetSymbols","platform":"' + platform + '"}'
+        # logger.info(precision_request)
+        # ws.send(precision_request,
+        #         opcode=0x1)
+        # precision_info = ws.recv()
+        # precision_info_dict = json.loads(precision_info)
+        # logger.info(precision_info_dict)
+        # precision_info_dict = precision_info_dict['symbols']
+        # fill_precision_info(precision_info_dict, r)
     else:
         # 连接失败
         logger.info("failed")
